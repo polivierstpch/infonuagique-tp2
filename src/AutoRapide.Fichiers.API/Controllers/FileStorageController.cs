@@ -32,15 +32,19 @@ public class FileStorageController : Controller
         try
         {
             var fileName = await _storage.UploadAsync(file);
-
             if (string.IsNullOrEmpty(fileName))
+            {
+                _logger.LogInformation("Le fichier {Fichier} n'était pas formatté correctement et n'a pas pu être enregistré", file.FileName);
                 return BadRequest();
+            }
         
+            _logger.LogInformation("Le fichier {Fichier} a été enregistré dans le service de stockage", fileName);
+            
             return Ok(fileName);
         }
         catch (IOException ex)
         {
-            _logger.LogError(ex.Message, ex.StackTrace);
+            _logger.LogError("{Message}\n{StackTrace}", ex.Message, ex.StackTrace);
             return Problem();
         }
     }
@@ -60,17 +64,24 @@ public class FileStorageController : Controller
         try
         {
             var sanitizedFileName = string.Concat(fileName.Split(Path.GetInvalidFileNameChars()));
-        
             var fileData = await _storage.DownloadAsync(sanitizedFileName);
 
             if (fileData is null)
+            {
+                _logger.LogInformation("Le fichier {Fichier} n'a pas été trouvé", sanitizedFileName);
                 return NotFound();
+            }
 
             new FileExtensionContentTypeProvider()
                 .TryGetContentType(sanitizedFileName, out var contentType);
 
             if (contentType?.Split('/')[0] is not "image" or "audio" or "video")
+            {
+                _logger.LogInformation("Le fichier {Fichier} n'était pas du Content-Type attendu ({ContentType})", sanitizedFileName, contentType ?? "aucun");
                 return NotFound();
+            }
+            
+            _logger.LogInformation("Le fichier {Fichier} a été téléchargé depuis le service avec succès", sanitizedFileName);
         
             return File(fileData, contentType);
         }

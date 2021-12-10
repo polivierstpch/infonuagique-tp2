@@ -32,7 +32,7 @@ public class FileSystemStorageService : IStorageService
         EnsureFolderExists(Path.Combine(RootDirectoryPath, subFolder));
         
         var fileName = $"{Guid.NewGuid()}{fileExtension}";
-        var newFilePath = Path.Combine(RootDirectoryPath, subFolder + " !", fileName);
+        var newFilePath = Path.Combine(RootDirectoryPath, subFolder, fileName);
         
         await using var writer = new FileStream(newFilePath, FileMode.Create);
         await file.CopyToAsync(writer);
@@ -52,7 +52,7 @@ public class FileSystemStorageService : IStorageService
         return await File.ReadAllBytesAsync(completePath);
     }
 
-    private string GetFolderNameFromContentType(string fileName)
+    private static string GetFolderNameFromContentType(string fileName)
     {
         var typeFound = new FileExtensionContentTypeProvider()
             .TryGetContentType(fileName, out var contentType);
@@ -70,10 +70,9 @@ public class FileSystemStorageService : IStorageService
             _ => DefaultSubFolderName
         };
     }
-    private void EnsureFolderExists(string path)
+    private static void EnsureFolderExists(string path)
     {
-        if (!Directory.Exists(path))
-            Directory.CreateDirectory(path);
+        Directory.CreateDirectory(path);
     }
     
 }
