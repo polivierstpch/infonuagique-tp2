@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
+﻿using AutoRapide.Fichiers.API.Interfaces;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace AutoRapide.Fichiers.API.Services;
 
@@ -34,7 +35,7 @@ public class FileSystemStorageService : IStorageService
         var fileName = $"{Guid.NewGuid()}{fileExtension}";
         var newFilePath = Path.Combine(RootDirectoryPath, subFolder, fileName);
         
-        await using var writer = new FileStream(newFilePath, FileMode.Create);
+        using var writer = new FileStream(newFilePath, FileMode.Create);
         await file.CopyToAsync(writer);
         
         return fileName;
@@ -50,6 +51,30 @@ public class FileSystemStorageService : IStorageService
             return null;
 
         return await File.ReadAllBytesAsync(completePath);
+    }
+
+    public async Task<bool> DeleteAsync(string fileName)
+    {
+        var folder = GetFolderNameFromContentType(fileName);
+        var completePath = Path.Combine(RootDirectoryPath, folder, fileName);
+
+        if (!File.Exists(completePath))
+            return false;
+
+        await using var fileStream = new FileStream(completePath,
+            FileMode.Open,
+            FileAccess.Read, 
+            FileShare.None, 
+            4096, 
+            FileOptions.DeleteOnClose);
+        await fileStream.FlushAsync();
+        
+        return true;
+    }
+
+    public Task<bool> ModifyAsync(string fileName, IFormFile file)
+    {
+        throw new NotImplementedException();
     }
 
     private static string GetFolderNameFromContentType(string fileName)

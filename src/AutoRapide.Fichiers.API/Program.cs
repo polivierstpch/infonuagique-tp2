@@ -1,4 +1,5 @@
 using System.Reflection;
+using AutoRapide.Fichiers.API.Interfaces;
 using AutoRapide.Fichiers.API.Services;
 using Microsoft.OpenApi.Models;
 
