@@ -6,6 +6,7 @@ namespace AutoRapide.Utilisateurs.API.Data
     public class UsagerContext : DbContext
     {
         public DbSet<Usager>? Usagers { get; set; }
+        public object Usager { get; internal set; }
 
         public UsagerContext(DbContextOptions<UsagerContext> options) : base(options)
         {
