@@ -1,5 +1,4 @@
 ﻿using AutoRapide.Fichiers.API.Interfaces;
-using AutoRapide.Fichiers.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -7,7 +6,7 @@ namespace AutoRapide.Fichiers.API.Controllers;
 
 [ApiController]
 [Route("files")]
-public class FileStorageController : Controller
+public class FileStorageController : ControllerBase
 {
     private readonly IStorageService _storage;
     private readonly ILogger _logger;
