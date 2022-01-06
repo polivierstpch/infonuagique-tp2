@@ -28,6 +28,11 @@ public class VehiculeService : IVehiculeService
         await _repository.SupprimerAsync(vehicule);
     }
 
+    public async Task ModifierAsync(Vehicule vehicule)
+    {
+        await _repository.ModifierAsync(vehicule);
+    }
+    
     public async Task<IEnumerable<Vehicule>> ObtenirListe()
     {
         return await _repository.ObtenirToutAsync();

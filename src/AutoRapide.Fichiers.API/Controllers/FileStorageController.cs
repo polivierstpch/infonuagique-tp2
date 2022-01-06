@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.StaticFiles;
 
 namespace AutoRapide.Fichiers.API.Controllers;
 
+[Route("api/fichiers")]
 [ApiController]
-[Route("files")]
 public class FileStorageController : ControllerBase
 {
     private readonly IStorageService _storage;
@@ -101,7 +101,7 @@ public class FileStorageController : ControllerBase
     /// <response code="404">Le fichier avec le nom spécifié n'a pas été trouvé.</response>
     /// <response code="500">Une erreur est survenue sur le serveur lors de la suppression du fichier.</response>
     [HttpDelete]
-    [Route("delete/{fileName:required}")]
+    [Route("supprimer/{fileName:required}")]
     public async Task<IActionResult> Delete(string fileName)
     {
         try

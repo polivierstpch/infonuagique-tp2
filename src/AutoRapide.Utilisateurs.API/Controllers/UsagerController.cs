@@ -49,7 +49,7 @@ namespace AutoRapide.Utilisateurs.API.Controllers
         {
             await _crudService.AjouterUsager(usager);
 
-            return CreatedAtAction(nameof(Post), new { id = usager.Id }, usager);
+            return CreatedAtAction(nameof(Get), new { id = usager.Id }, usager);
         }
 
         [HttpPut]
