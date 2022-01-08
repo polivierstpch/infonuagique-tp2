@@ -26,6 +26,7 @@ public class GestionVehiculeController : ControllerBase
     public async Task<ActionResult<IEnumerable<Vehicule>>> ObtenirTout()
     {
         var vehicules = await _vehiculeService.ObtenirListe();
+        _logger.LogInformation(CustomLogEvents.Lecture, "Obtention de tous les véhicules de la base de données");
         return Ok(vehicules);
     }
     
@@ -43,8 +44,12 @@ public class GestionVehiculeController : ControllerBase
         var vehicule = await _vehiculeService.TrouverParIdAsync(id);
 
         if (vehicule is null)
+        {
+            _logger.LogInformation(CustomLogEvents.Lecture,"Le véhicule avec l'identifiant {Id}, n'a pas été trouvé", id);
             return NotFound();
-
+        }
+        
+        _logger.LogInformation(CustomLogEvents.Lecture,"Le véhicule avec l'identifiant {Id} a été trouvé", id);
         return Ok(vehicule);
     }
     
@@ -59,13 +64,8 @@ public class GestionVehiculeController : ControllerBase
     [Route("enregistrer")]
     public async Task<IActionResult> Ajouter([FromBody] Vehicule vehicule)
     {
-        if (!ModelState.IsValid)
-        {
-            var erreurs = ModelState.Values.SelectMany(v => v.Errors);
-            return BadRequest(erreurs);
-        }
-
         await _vehiculeService.EnregistrerAsync(vehicule);
+        _logger.LogInformation(CustomLogEvents.Creation, "Création du véhicule réussi, avec l'identifiant {Id}", vehicule.Id);
         return CreatedAtAction(nameof(ObtenirUn), new {id = vehicule.Id}, vehicule);
 
     }
@@ -85,9 +85,13 @@ public class GestionVehiculeController : ControllerBase
         var vehiculeASupprimer = await _vehiculeService.TrouverParIdAsync(id);
 
         if (vehiculeASupprimer is null)
+        {
+            _logger.LogInformation(CustomLogEvents.Suppression, "Le véhicule avec l'identifiant {Id} n'a pas été trouvé", id);
             return NotFound();
-
+        }
+        
         await _vehiculeService.SupprimerAsync(vehiculeASupprimer);
+        _logger.LogInformation(CustomLogEvents.Suppression, "Le véhicule avec l'identifiant {Id} a été supprimé", id);
 
         return NoContent();
     }
@@ -110,20 +114,26 @@ public class GestionVehiculeController : ControllerBase
     public async Task<IActionResult> Modifier(int id, [FromBody] Vehicule vehicule)
     {
         if (id != vehicule.Id)
+        {
+            _logger.LogInformation(CustomLogEvents.Modification, 
+                "L'identifiant {Id} ne correspond pas a l'identifiant du véhicule à modifier ({IdVehicule})",
+                id,
+                vehicule.Id);
             return BadRequest("L'identifant n'est pas le même que celui du véhicule du corps de la requête.");
+        }
 
         var vehiculeExistant = await _vehiculeService.TrouverParIdAsync(id);
 
         if (vehiculeExistant is null)
-            return NotFound();
-
-        if (!ModelState.IsValid)
         {
-            var erreurs = ModelState.Values.SelectMany(v => v.Errors);
-            return BadRequest(erreurs);
+            _logger.LogInformation(CustomLogEvents.Modification,
+                "Le véhicule avec l'identifiant {Id} n'existe pas dans la base de données",
+                id);
+            return NotFound();
         }
 
         await _vehiculeService.ModifierAsync(vehicule);
+        _logger.LogInformation(CustomLogEvents.Modification, "Le véhicule avec l'identifiant {Id} a bien été modifié", id);
 
         return NoContent();
     }
