@@ -34,7 +34,7 @@ public class Vehicule
     public string Couleur { get; set; }
     
     [Required(ErrorMessage = "Ce champ est requis.")]
-    [RegularExpression(@"^[A-Z0-9]{17}$")]
+    [RegularExpression(@"^[A-Z0-9]{17}$", ErrorMessage = "Le NIV doit être composé de 17 caractères et seulement de caractères alphanumériques (en majuscule).")]
     public string NIV { get; set; }
     
     [Required(ErrorMessage = "Ce champ est requis.")]
