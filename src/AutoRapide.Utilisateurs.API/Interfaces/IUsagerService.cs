@@ -5,7 +5,7 @@ namespace AutoRapide.Utilisateurs.API.Interfaces
     public interface IUsagerService
     {
         Task<Usager> ObtenirUsagerParId(int id);
-        Task<Usager> ObtenirUsagerParCourriel(string courriel);
+        Task<Usager> ObtenirUsagerParCodeUsager(string code);
         Task<IEnumerable<Usager>> ObtenirTousLesUsagers();
         Task AjouterUsager(Usager usager);
         Task ModifierUsager(Usager usager);
