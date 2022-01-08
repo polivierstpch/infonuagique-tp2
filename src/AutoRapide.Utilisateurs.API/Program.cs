@@ -2,8 +2,10 @@ using AutoRapide.Utilisateurs.API.Data;
 using AutoRapide.Utilisateurs.API.Interfaces;
 using AutoRapide.Utilisateurs.API.Repositories;
 using AutoRapide.Utilisateurs.API.Services;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Net;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +55,27 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Usagers.API v1"));
+}
+else
+{
+    app.UseExceptionHandler(appError =>
+    {
+        appError.Run(async context =>
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.ContentType = "application/json";
+            var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
+            if (exceptionHandlerPathFeature?.Error is ArgumentException)
+            {
+                String.Format("Status Code: {0}, Message : {1}", context.Response.StatusCode, "Aucune reponse pour cette requête");
+            }
+            else
+            {
+                String.Format("Status Code: {0}, Message : {1}", context.Response.StatusCode, "Internal Server Error.");
+            }
+        });
+    });
+
 }
 
 app.UseHttpsRedirection();
