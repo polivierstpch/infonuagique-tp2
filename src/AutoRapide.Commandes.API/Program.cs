@@ -1,5 +1,9 @@
 using System.Reflection;
 using AutoRapide.Commandes.API.Data;
+using AutoRapide.Commandes.API.Entities;
+using AutoRapide.Commandes.API.Interfaces;
+using AutoRapide.Commandes.API.Repositories;
+using AutoRapide.Commandes.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -8,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<CommandeContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddScoped<IAsyncRepository<Commande>, CommandeRepository>();
+builder.Services.AddScoped<ICommandeService, CommandeService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
