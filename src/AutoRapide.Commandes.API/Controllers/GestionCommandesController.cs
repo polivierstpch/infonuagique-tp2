@@ -18,6 +18,12 @@ public class GestionCommandesController : ControllerBase
         _logger = logger;
     }
     
+    /// <summary>
+    /// Retourne toutes les commandes contenues dans la base de données.
+    /// </summary>
+    /// <returns>La liste des commandes dans la base de données dans le corps de la requête.</returns>
+    /// <response code="200">La liste des commandes est retournée dans le corps de la réponse.</response>
+    /// <response code="500">Une erreur au niveau du serveur est survenue.</response>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Commande>>> ObtenirTout()
     {
@@ -26,7 +32,16 @@ public class GestionCommandesController : ControllerBase
          
          return Ok(commandes);
     }
-
+    
+    
+    /// <summary>
+    /// Retourne une commande selon l'identifiant fourni dans la requête.
+    /// </summary>
+    /// <param name="id">L'identifiant de la commande.</param>
+    /// <returns>Une réponse HTTP Ok avec une commande dans le corps de la requête ou bien une réponse HTTP NotFound.</returns>
+    /// <response code="200">Une commande dans le corps de la requête est fournie.</response>
+    /// <response code="404">Aucune commande avec l'identifiant fourni n'a été trouvée.</response>
+    /// <response code="500">Une erreur au niveau du serveur est survenue.</response>
     [Route("{id:int}")]
     [HttpGet]
     public async Task<ActionResult<Commande>> ObtenirUne(int id)
@@ -43,10 +58,19 @@ public class GestionCommandesController : ControllerBase
         _logger.LogInformation(CustomLogEvents.Lecture, "La commande avec l'identifiant {Id} va être envoyée", id);
         return Ok(commande);
     }
-
+    
+    /// <summary>
+    /// Enregistre une commande passée dans le corps de la requête dans la base de données.
+    /// </summary>
+    /// <param name="commande">Commande à enregistrer dans la base de données.</param>
+    /// <returns>Une réponse HTTP Created avec le chemin pour y accéder par l'API dans le corps de la requête.</returns>
+    /// <response code="201">La création de la commande a réussi.</response>
+    /// <response code="400">Une commande avec l'identifiant du véhicule fourni existe déjà.</response>
+    /// <response code="400">La date d'une commande ne peut être antérieure à aujourd'hui.</response>
+    /// <response code="500">Une erreur au niveau du serveur est survenue.</response>
     [Route("enregistrer")]
     [HttpPost]
-    public async Task<IActionResult> Enregistrer(Commande commande)
+    public async Task<IActionResult> Enregistrer([FromBody] Commande commande)
     {
         bool existe = await _commandeService.CommandeAvecVehiculeExiste(commande.VehiculeId);
         _logger.LogInformation(CustomLogEvents.Creation,
@@ -72,10 +96,22 @@ public class GestionCommandesController : ControllerBase
         
         return CreatedAtAction(nameof(ObtenirUne), new {id = commande.Id}, commande);
     }
-
+    
+    /// <summary>
+    /// Modifie une commande selon l'identifiant et la commande passée en paramètre.
+    /// </summary>
+    /// <param name="id">Identifiant de la commande à modifier.</param>
+    /// <param name="commande">Commande à modifier.</param>
+    /// <returns>Une réponse HTTP NoContent quand la requête est réussie.</returns>
+    /// <response code="204">La requête de modification de la commande a été effectuée.</response>
+    /// <response code="400">L'identifiant passé en paramètre et l'identifiant de la commande passée en paramètre ne sont pas les mêmes.</response>
+    /// <response code="400">Une commande avec l'identifiant du véhicule fourni existe déjà.</response>
+    /// <response code="400">Lors d'une modification de commande, on ne peut pas changer la date.</response>
+    /// <response code="404">La commande à modifier n'existe pas dans la base de données.</response>
+    /// <response code="500">Une erreur au niveau du serveur est survenue.</response>
     [Route("modifier/{id:int}")]
     [HttpPut]
-    public async Task<IActionResult> Modifier(int id, Commande commande)
+    public async Task<IActionResult> Modifier(int id, [FromBody] Commande commande)
     {
         if (id != commande.Id)
         {
@@ -124,6 +160,14 @@ public class GestionCommandesController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Supprime une commande selon l'identifiant passé en paramètre de la base de données.
+    /// </summary>
+    /// <param name="id">Identifiant de la commande à supprimer.</param>
+    /// <returns>Une réponse HTTP NoContent si la suppression a réussi, une réponse NotFound si la commande n'est pas trouvée.</returns>
+    /// <response code="204">La requête de suppression a été effectuée.</response>
+    /// <response code="404">La commande à supprimer n'existe pas dans la base de données.</response>
+    /// <response code="500">Une erreur au niveau du serveur est survenue.</response>
     [Route("supprimer/{id:int}")]
     [HttpDelete]
     public async Task<IActionResult> Supprimer(int id)
