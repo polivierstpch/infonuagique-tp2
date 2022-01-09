@@ -1,6 +1,9 @@
 ﻿namespace AutoRapide.MVC.Services
 {
-    public class IFavorisService
+    public interface IFavorisService
     {
+        Task<IEnumerable<int>> ObtenirLesFavoris();
+        Task<HttpResponseMessage> AjouterFavori(int idVehicule);
+        Task<HttpResponseMessage> EffacerFavori(int idVehicule);
     }
 }
