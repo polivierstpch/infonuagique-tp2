@@ -41,4 +41,10 @@ public class CommandeService : ICommandeService
     {
         await _repository.SupprimerAsync(commande);
     }
+
+    public async Task<bool> CommandeAvecVehiculeExiste(int idVehicule)
+    {
+        var commandes = await _repository.ObtenirListeAsync(c => c.VehiculeId == idVehicule);
+        return commandes.Any();
+    }
 }

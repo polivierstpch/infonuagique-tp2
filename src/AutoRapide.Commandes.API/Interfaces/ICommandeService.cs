@@ -10,4 +10,6 @@ public interface ICommandeService
     Task Enregistrer(Commande commande);
     Task Modifier(Commande commande);
     Task Supprimer(Commande commande);
+    Task<bool> CommandeAvecVehiculeExiste(int idVehicule);
+
 }
