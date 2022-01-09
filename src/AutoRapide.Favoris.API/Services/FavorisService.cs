@@ -42,7 +42,15 @@ namespace AutoRapide.Favoris.API.Services
         {
             if (_memoryCache.TryGetValue(_cacheKey, out List<int> idsVehicules))
             {
+                if (!idsVehicules.Contains(idVehicule))
+                {
+                    throw new InvalidDataException("Le véhicule ne se trouve pas dans les favoris.");
+                }
                 idsVehicules.Remove(idVehicule);
+            }
+            if(idsVehicules == null)
+            {
+                throw new NullReferenceException("Il n'y a aucun favori d'enregistré.");
             }
             _cacheService.SetValuesCacheFavoris(idsVehicules);
         }
