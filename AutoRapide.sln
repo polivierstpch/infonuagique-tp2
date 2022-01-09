@@ -4,22 +4,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5A3E3073-5ADE-4695-A849-D9F5656E0A19}"
+	ProjectSection(SolutionItems) = preProject
+		src\AutoRapide.Utilisateurs.API\CustomLogEvents.cs = src\AutoRapide.Utilisateurs.API\CustomLogEvents.cs
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.MVC", "src\AutoRapide.MVC\AutoRapide.MVC.csproj", "{7CB3DFFC-A944-4629-8722-951770936CA3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.Fichiers.API", "src\AutoRapide.Fichiers.API\AutoRapide.Fichiers.API.csproj", "{C993C315-1B14-48FE-AE99-F5FAD8D66969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoRapide.Vehicules.API", "src\AutoRapide.Vehicules.API\AutoRapide.Vehicules.API.csproj", "{6D4A1F23-65D9-4948-A804-773E2A285A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.Vehicules.API", "src\AutoRapide.Vehicules.API\AutoRapide.Vehicules.API.csproj", "{6D4A1F23-65D9-4948-A804-773E2A285A8A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.Favoris.API", "src\AutoRapide.Favoris.API\AutoRapide.Favoris.API.csproj", "{F9237526-9EB1-4314-AFAB-DA22C0EC26D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoRapide.Commandes.API", "src\AutoRapide.Commandes.API\AutoRapide.Commandes.API.csproj", "{6C906811-F8EA-434C-AFB6-FD11FE3741C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.Commandes.API", "src\AutoRapide.Commandes.API\AutoRapide.Commandes.API.csproj", "{6C906811-F8EA-434C-AFB6-FD11FE3741C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoRapide.Utilisateurs.API", "src\AutoRapide.Utilisateurs.API\AutoRapide.Utilisateurs.API.csproj", "{BCD347AC-FAC5-4674-96C2-E4CF91B21080}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.Utilisateurs.API", "src\AutoRapide.Utilisateurs.API\AutoRapide.Utilisateurs.API.csproj", "{BCD347AC-FAC5-4674-96C2-E4CF91B21080}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{813CC984-4BAC-4BB2-882F-3653475B87EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoRapide.MVC.UnitTests", "tests\AutoRapide.MVC.UnitTests\AutoRapide.MVC.UnitTests.csproj", "{A988C2FE-29EE-4890-A808-80CF6DCFB547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.MVC.UnitTests", "tests\AutoRapide.MVC.UnitTests\AutoRapide.MVC.UnitTests.csproj", "{A988C2FE-29EE-4890-A808-80CF6DCFB547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
