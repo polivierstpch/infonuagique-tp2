@@ -3,18 +3,17 @@
 //using Vehicule.API.Data;
 //using Commandes.API.Data;
 //using Favoris.API.Data;
-using AutoRapide.MVC.Data;
+//using AutoRapide.MVC.Data;
+using AutoRapide.MVC.Services;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddControllersWithViews();
-
-//builder.Services.AddDbContext<AutoRapideContext>(options =>
-  //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
- 
-builder.Services.AddControllers();
+var provider = builder.Services.BuildServiceProvider();
+var configuration = provider.GetRequiredService<IConfiguration>();
+builder.Services.AddHttpClient<IUsagerService, UtilisateursServiceProxy>(client => client.BaseAddress = new Uri(configuration.GetValue<string>("UrlUsagerAPI")));
+builder.Services.AddControllersWithViews();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
