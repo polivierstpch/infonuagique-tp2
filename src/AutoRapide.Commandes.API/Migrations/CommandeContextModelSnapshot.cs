@@ -26,8 +26,8 @@ namespace AutoRapide.Commandes.API.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsagerId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("UsagerId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("VehiculeId")
                         .HasColumnType("INTEGER");

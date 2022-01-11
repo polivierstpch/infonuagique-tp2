@@ -33,6 +33,23 @@ public class GestionCommandesController : ControllerBase
          return Ok(commandes);
     }
     
+    /// <summary>
+    /// Retourne les commandes pour un id usager contenues dans la base de données.
+    /// </summary>
+    /// <returns>La liste des commandes dans la base de données dans le corps de la requête.</returns>
+    /// <response code="200">La liste des commandes est retournée dans le corps de la réponse.</response>
+    /// <response code="500">Une erreur au niveau du serveur est survenue.</response>
+    [Route("usager/{id:int}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Commande>>> ObtenirToutPourUsager(int id)
+    {
+        var commandes = await _commandeService.ObtenirCommandesParUsager(id);
+        _logger.LogInformation(CustomLogEvents.Lecture, "Obtention de {Compte} commande(s) pour usager id {Id}",
+            commandes.Count(), id);
+         
+        return Ok(commandes);
+    }
+    
     
     /// <summary>
     /// Retourne une commande selon l'identifiant fourni dans la requête.
