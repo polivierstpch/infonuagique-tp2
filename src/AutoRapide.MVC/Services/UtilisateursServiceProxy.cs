@@ -26,7 +26,6 @@ namespace AutoRapide.MVC.Services
         }
         public async Task<HttpResponseMessage> AjouterUsager(Usager usager) {
             StringContent content = new StringContent(JsonConvert.SerializeObject(usager), Encoding.UTF8, "application/json");
-
             return await _httpClient.PostAsync(_usagerApiUrl, content);
         }
         public async Task<HttpResponseMessage> ModifierUsager(Usager usager) {
