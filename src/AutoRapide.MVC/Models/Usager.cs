@@ -11,5 +11,6 @@ namespace AutoRapide.MVC.Models
         [Required]
         public string Email { get; set; } = "";
         public string? Adresse { get; set; }
+        public string? CodeUniqueUsager { get; set; }
     }
 }

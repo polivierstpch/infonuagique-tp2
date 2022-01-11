@@ -27,9 +27,8 @@ namespace AutoRapide.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _usagersProxy.AjouterUsager(usager);
-                var allo = response.RequestMessage;
-                var content = response.Content.ReadFromJsonAsync<Usager>();
-                //var usagerCree = JsonConvert.DeserializeObject(content.);
+                var content = response.Content.ReadAsStringAsync();
+                var usagerCree = JsonConvert.DeserializeObject<Usager>(content.Result);
                 return RedirectToAction("Index", "Home");
             }
             return View();
