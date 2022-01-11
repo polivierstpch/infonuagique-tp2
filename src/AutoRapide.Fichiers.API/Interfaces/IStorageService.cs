@@ -3,11 +3,11 @@
 public interface IStorageService
 {
     /// <summary>
-    /// Registers a file into the file storage service and returns back the new filename.
+    /// Sauvegarde un fichier dans le système de stockage.
     /// </summary>
-    /// <param name="file">Form file to register in the service.</param>
-    /// <returns>The new filename of the newly registered file.</returns>
-    Task<string> UploadAsync(IFormFile file);
+    /// <param name="nomFichier">Nom du fichier pour le stockage.</param>
+    /// <param name="fichier">Fichier de formulaire à stocker.</param>
+    Task UploadAsync(string nomFichier, IFormFile fichier);
     
     /// <summary>
     /// Gets a file on the service by filename, returns the bytes of the file.
@@ -23,4 +23,5 @@ public interface IStorageService
     /// <param name="fileName">Name of the file to delete on the service.</param>
     /// <returns>Wether or not the deletion of the file was successful.</returns>
     Task<bool> DeleteAsync(string fileName);
+    
 }

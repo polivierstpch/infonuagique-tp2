@@ -22,80 +22,51 @@ public class FileSystemStorageService : IStorageService
         );
     }
     
-    public async Task<string> UploadAsync(IFormFile file)
+    public async Task UploadAsync(string nomFichier, IFormFile fichier)
     {
-        var fileExtension = Path.GetExtension(file.FileName);
+        var extension = Path.GetExtension(nomFichier);
+        if (string.IsNullOrEmpty(extension))
+            return;
         
-        if (fileExtension == string.Empty)
-            return string.Empty;
+        EnsureFolderExists(RootDirectoryPath);
         
-        var subFolder = GetFolderNameFromContentType(file.FileName);
-        EnsureFolderExists(Path.Combine(RootDirectoryPath, subFolder));
+        var cheminFichier = Path.Combine(RootDirectoryPath, nomFichier);
         
-        var fileName = $"{Guid.NewGuid()}{fileExtension}";
-        var newFilePath = Path.Combine(RootDirectoryPath, subFolder, fileName);
-        
-        using var writer = new FileStream(newFilePath, FileMode.Create);
-        await file.CopyToAsync(writer);
-        
-        return fileName;
+        await using var writer = new FileStream(cheminFichier, FileMode.Create);
+        await fichier.CopyToAsync(writer);
     }
     
     
     public async Task<byte[]> DownloadAsync(string fileName)
     {
-        var folder = GetFolderNameFromContentType(fileName);
-
-        var completePath = Path.Combine(RootDirectoryPath, folder, fileName);
+        var completePath = Path.Combine(RootDirectoryPath, fileName);
         
         if (!File.Exists(completePath))
-            return null;
+            return Array.Empty<byte>();
 
         return await File.ReadAllBytesAsync(completePath);
     }
 
     public async Task<bool> DeleteAsync(string fileName)
     {
-        var folder = GetFolderNameFromContentType(fileName);
-        var completePath = Path.Combine(RootDirectoryPath, folder, fileName);
+        var completePath = Path.Combine(RootDirectoryPath, fileName);
 
         if (!File.Exists(completePath))
             return false;
 
-        await using var fileStream = new FileStream(completePath,
+        await using var fileStream = new FileStream(
+            completePath,
             FileMode.Open,
             FileAccess.Read, 
             FileShare.None, 
             4096, 
-            FileOptions.DeleteOnClose);
+            FileOptions.DeleteOnClose
+        );
         await fileStream.FlushAsync();
         
         return true;
     }
-
-    public Task<bool> ModifyAsync(string fileName, IFormFile file)
-    {
-        throw new NotImplementedException();
-    }
-
-    private static string GetFolderNameFromContentType(string fileName)
-    {
-        var typeFound = new FileExtensionContentTypeProvider()
-            .TryGetContentType(fileName, out var contentType);
-        
-        if (!typeFound)
-            return DefaultSubFolderName; 
-        
-        var mainType = contentType.Split('/')[0];
-
-        return mainType switch
-        {
-            "image" => "images",
-            "video" => "videos",
-            "audio" => "audio",
-            _ => DefaultSubFolderName
-        };
-    }
+    
     private static void EnsureFolderExists(string path)
     {
         Directory.CreateDirectory(path);
