@@ -1,14 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using AutoRapide.MVC.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace AutoRapide.MVC.Controllers
+namespace AutoRapide.MVC.Controllers;
+
+public class VehiculesController : Controller
 {
-    public class VehiculesController : Controller
+    private readonly IVehiculesService _vehiculesService;
+
+    public VehiculesController(IVehiculesService vehiculesService)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        _vehiculesService = vehiculesService;
+    }
 
-
+    // GET
+    public async Task<IActionResult> Index()
+    {
+        var vehicules = await _vehiculesService.ObtenirToutAsync();
+        return View(vehicules);
     }
 }
