@@ -1,6 +1,6 @@
 ﻿namespace AutoRapide.MVC.Services
 {
-    public class UtilisateursServiceProxy
+    public class UtilisateursServiceProxy: IUtilisateursService
     {
     }
 }
