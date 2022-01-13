@@ -1,12 +1,14 @@
-﻿using AutoRapide.Utilisateurs.API.Entities;
+﻿using AutoRapide.MVC.Models;
 
 namespace AutoRapide.MVC.Services
 {
-    public interface IUtilisateursService
+    public interface IUsagerService
     {
-        public Task Creer(Utilisateur utilisateur);
-        public Task<Utilisateur> ObtenirUtilisateur(int id);
-        public Task Supprimer(Utilisateur utilisateur);
-
+        Task<Usager> ObtenirUsagerParId(int id);
+        Task<Usager> ObtenirUsagerParCodeUsager(string code);
+        Task<IEnumerable<Usager>> ObtenirTousLesUsagers();
+        Task<HttpResponseMessage> AjouterUsager(Usager usager);
+        Task<HttpResponseMessage> ModifierUsager(Usager usager);
+        Task<HttpResponseMessage> EffacerUsager(int id);
     }
 }
