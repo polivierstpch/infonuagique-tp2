@@ -21,7 +21,7 @@ namespace AutoRapide.MVC.Controllers
 
         // GET: Usagers/Create
         [HttpGet]
-        public async Task<IActionResult> AjouterUsager()
+        public async Task<IActionResult> Create()
         { 
             return View();
         }
@@ -29,7 +29,7 @@ namespace AutoRapide.MVC.Controllers
         // POST: Usagers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AjouterUsager([Bind("Nom, Prenom, Email, Adresse")] Usager usager)
+        public async Task<IActionResult> Create([Bind("Nom, Prenom, Email, Adresse")] Usager usager)
         {
             if (InputValidation(usager))
             {
