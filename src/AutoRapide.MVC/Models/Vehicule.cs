@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AutoRapide.MVC.Models
 {
@@ -20,7 +21,8 @@ namespace AutoRapide.MVC.Models
         [Required(ErrorMessage = "Ce champ est requis.")]
         [Range(1900, 9999, ErrorMessage = "Veuillez fournir une date de fabrication valide (1900 à 9999).")]
         public int AnneeFabrication { get; set; }
-    
+        
+        [DisplayName("Carburant")]
         [Required(ErrorMessage = "Ce champ est requis.")]
         public TypeVehicule Type { get; set; }
     

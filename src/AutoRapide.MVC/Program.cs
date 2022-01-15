@@ -1,3 +1,4 @@
+using AutoRapide.MVC.Interfaces;
 using AutoRapide.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);

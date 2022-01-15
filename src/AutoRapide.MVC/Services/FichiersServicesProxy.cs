@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using AutoRapide.MVC.Interfaces;
+﻿using AutoRapide.MVC.Interfaces;
 
 namespace AutoRapide.MVC.Services
 {

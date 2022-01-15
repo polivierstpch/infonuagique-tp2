@@ -1,3 +1,4 @@
+using AutoRapide.MVC.Interfaces;
 using AutoRapide.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,5 +18,10 @@ public class VehiculesController : Controller
     {
         var vehicules = await _vehiculesService.ObtenirToutAsync();
         return View(vehicules);
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        return Ok();
     }
 }

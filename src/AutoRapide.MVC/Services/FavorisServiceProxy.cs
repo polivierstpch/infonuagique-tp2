@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
+using AutoRapide.MVC.Interfaces;
 
 namespace AutoRapide.MVC.Services
 {

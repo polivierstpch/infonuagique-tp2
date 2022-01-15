@@ -1,6 +1,6 @@
 ﻿using AutoRapide.MVC.Models;
 
-namespace AutoRapide.MVC.Services
+namespace AutoRapide.MVC.Interfaces
 {
     public interface IVehiculesService
     {
