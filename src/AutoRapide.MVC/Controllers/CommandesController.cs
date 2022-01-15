@@ -41,7 +41,6 @@ public class CommandesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(Vehicule vehicule, string codeUsager)
     {
-        
         if (!vehicule.EstDisponible)
         {
             ModelState.AddModelError("Vehicule", "Le véhicule n'est pas disponible.");

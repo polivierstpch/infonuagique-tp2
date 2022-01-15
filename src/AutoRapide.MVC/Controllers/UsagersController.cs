@@ -56,13 +56,13 @@ namespace AutoRapide.MVC.Controllers
         public async Task<ActionResult> Details(string userCode)
         {
 
-            if (userCode == null)
+            if (id == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
-            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParCodeUsager(userCode);
+            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParId(id.Value);
 
             if (utilisateurReponse == null)
             {
@@ -89,7 +89,7 @@ namespace AutoRapide.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //usager.CodeUniqueUsager = GenererCodeUniqueUsager(usager);
+                    usager.CodeUniqueUsager = GenererCodeUniqueUsager(usager);
                     var response = await _usagersProxy.AjouterUsager(usager);
                     var content = response.Content.ReadAsStringAsync();
                     var usagerCree = JsonConvert.DeserializeObject<Usager>(content.Result);
@@ -101,7 +101,7 @@ namespace AutoRapide.MVC.Controllers
 
         // GET: Usagers/Edit
         [HttpGet]
-        public async Task<ActionResult> Modifier(int? id)
+        public async Task<ActionResult> ModifierUsager(int? id)
         {
             if (id == null)
             {
@@ -122,7 +122,7 @@ namespace AutoRapide.MVC.Controllers
 
         //POST: Usagers/Edit
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Modifier(int? id, Usager usager)
+        public async Task<ActionResult> ModifierUsager(int? id, Usager usager)
         {
             if (id == null)
             {
