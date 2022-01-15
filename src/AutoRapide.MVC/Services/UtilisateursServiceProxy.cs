@@ -9,7 +9,7 @@ namespace AutoRapide.MVC.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
-        private const string _usagerApiUrl = "api/Usager/";
+        private const string _usagerApiUrl = "api/usager/";
         public UtilisateursServiceProxy(HttpClient httpClient, IConfiguration config)
         {
             _httpClient = httpClient;

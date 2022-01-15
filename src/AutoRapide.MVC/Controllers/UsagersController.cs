@@ -13,10 +13,43 @@ namespace AutoRapide.MVC.Controllers
         private const string _MSG_USAGER_SUPPRESSION_IMPOSSIBLE = "Une commande à été effectuée par cet usager. Celui-ci ne peux pas être supprimé";
         
         private readonly IUsagerService _usagersProxy;
-        
-        public UsagersController(IUsagerService usagerProxy)
+        //private readonly ICommandesService _commandesProxy;
+        //private readonly IFavorisService _favorisProxy;
+
+        public UsagersController(IUsagerService usagerProxy /*, ICommandesService commandesProxy, IFavorisService _favorisProxy*/)
         {
             _usagersProxy = usagerProxy;
+            //_commandesProxy = commandesProxy;
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            var utilisateurReponse = await _usagersProxy.ObtenirTousLesUsagers();
+
+            List<Usager> utilisateurs = utilisateurReponse.ToList();
+
+            return View(utilisateurs);
+
+        }
+
+        public async Task<ActionResult> Details(int? id)
+        {
+
+            if (id == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
+
+            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParId(id.Value);
+
+            if (utilisateurReponse == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
+
+            return View(utilisateurReponse);
         }
 
         // GET: Usagers/Create
@@ -42,7 +75,7 @@ namespace AutoRapide.MVC.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            return View();
+            return View(usager);
         }
 
         // GET: Usagers/Edit
@@ -133,6 +166,58 @@ namespace AutoRapide.MVC.Controllers
             }
 
             return true;
+        }
+
+        public async Task<ActionResult> Supprimer(int? id)
+        {
+            if (id == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
+
+            var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
+
+            if (response == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
+
+            //var commandesResponse = await _commandesProxy.ObtenirToutesLesCommandes();
+            //List<Commande> allCommandes = commandesResponse.ToString();
+
+            //if (allCommandes.Any(c => c.IdUtilisateur == response.Id))
+            //{
+            //    ViewBag.MessageErreur = _MSG_USAGER_SUPPRESSION_IMPOSSIBLE;
+            //    return View("Error");
+            //}
+
+            return View(response);
+        }
+
+        [HttpPost, ActionName("Supprimer")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SupprimerUtilisateur(int? id, Usager utilisateur)
+        {
+            if (id == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
+
+            var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
+
+            if (response == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
+
+            var responseSuppression = await _usagersProxy.EffacerUsager(response.Id);
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         private string GenererCodeUniqueUsager(Usager usager)
