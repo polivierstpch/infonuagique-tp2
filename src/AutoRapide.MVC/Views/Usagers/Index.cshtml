@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.CodeUniqueUsager)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Modifier" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Supprimer" asp-route-id="@item.Id">Supprimer</a>
+                <a asp-action="Details" asp-route-code="@item.CodeUniqueUsager">Details</a> |
+                <a asp-action="Modifier" asp-route-code="@item.CodeUniqueUsager">Modifier</a> |
+                <a asp-action="Supprimer" asp-route-code="@item.CodeUniqueUsager">Supprimer</a>
             </td>
         </tr>
 }
