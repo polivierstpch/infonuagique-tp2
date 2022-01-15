@@ -24,24 +24,24 @@ namespace AutoRapide.MVC.Services
                 formData.Add(new StreamContent(stream), "fichiers", fichier.FileName);
             }
 
-            var response = await _httpClient.PostAsync(RouteApi + "upload", formData);
+            var reponse = await _httpClient.PostAsync(RouteApi + "upload", formData);
 
-            response.EnsureSuccessStatusCode();
+            reponse.EnsureSuccessStatusCode();
 
-            var fileNames = await response.Content.ReadFromJsonAsync<IEnumerable<string>>();
+            var nomFichier = await reponse.Content.ReadFromJsonAsync<IEnumerable<string>>();
 
-            return fileNames;
+            return nomFichier;
         }
 
         public async Task SupprimerFichiers(params string[] urlsImage)
         { 
             var reponses = new List<Task<HttpResponseMessage>>(urlsImage.Length);
 
-            var apiLinkToImages = $"{_httpClient.BaseAddress}{RouteApi}";
+            var lienApiImages = $"{_httpClient.BaseAddress}{RouteApi}";
             
             foreach (var url in urlsImage)
             {
-                var nomFichier = url.Replace(apiLinkToImages, "");
+                var nomFichier = url.Replace(lienApiImages, string.Empty);
                 reponses.Add(_httpClient.DeleteAsync($"{RouteApi}supprimer/{nomFichier}"));
             }
 
