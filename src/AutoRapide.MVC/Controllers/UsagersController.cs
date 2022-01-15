@@ -1,8 +1,9 @@
 ﻿using AutoRapide.MVC.Models;
+using AutoRapide.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.DataProtection;
 using System.Text.RegularExpressions;
-using AutoRapide.MVC.Interfaces;
 
 namespace AutoRapide.MVC.Controllers
 {
@@ -33,6 +34,7 @@ namespace AutoRapide.MVC.Controllers
 
         public async Task<ActionResult> Details(string code)
         {
+
             if (code == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
@@ -211,10 +213,11 @@ namespace AutoRapide.MVC.Controllers
                 return View("Error");
             }
 
-            var responseSuppression = await _usagersProxy.EffacerUsager(code);
+            var responseSuppression = await _usagersProxy.EffacerUsager(response.CodeUniqueUsager);
 
             return RedirectToAction(nameof(Index));
 
         }
+
     }
 }

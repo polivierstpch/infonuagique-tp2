@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System.Text;
-using AutoRapide.MVC.Interfaces;
 
 namespace AutoRapide.MVC.Services
 {
@@ -15,6 +14,12 @@ namespace AutoRapide.MVC.Services
         {
             _httpClient = httpClient;
             _config = config;
+        }
+
+        public async Task<Usager> ObtenirUsagerParId(int id)
+        {
+            var content = await _httpClient.GetFromJsonAsync<Usager>(_usagerApiUrl + id);
+            return content;
         }
         public async Task<Usager> ObtenirUsagerParCodeUsager(string code)
         {
@@ -31,7 +36,7 @@ namespace AutoRapide.MVC.Services
         }
         public async Task<HttpResponseMessage> ModifierUsager(Usager usager) {
             StringContent content = new StringContent(JsonConvert.SerializeObject(usager), Encoding.UTF8, "application/json");
-            return await _httpClient.PutAsync(_usagerApiUrl + usager.Id, content);
+            return await _httpClient.PutAsync(_usagerApiUrl + usager.CodeUniqueUsager, content);
         }
         public async Task<HttpResponseMessage> EffacerUsager(string code) {
             return await _httpClient.DeleteAsync(_usagerApiUrl + code);
