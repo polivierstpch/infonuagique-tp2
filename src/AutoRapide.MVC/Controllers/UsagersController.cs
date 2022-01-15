@@ -32,7 +32,7 @@ namespace AutoRapide.MVC.Controllers
 
         }
 
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(string code)
         {
 
             if (id == null)
