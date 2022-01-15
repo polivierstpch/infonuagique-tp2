@@ -81,7 +81,6 @@ public class CommandesController : Controller
             ModelState.AddModelError("CodeUsager", "Le code usager était invalide.");
             return View(vehicule);
         }
-      
     }
     
 

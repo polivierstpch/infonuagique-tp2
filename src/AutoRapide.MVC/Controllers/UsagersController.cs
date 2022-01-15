@@ -32,28 +32,7 @@ namespace AutoRapide.MVC.Controllers
 
         }
 
-        //public async Task<ActionResult> Details(int? id)
-        //{
-
-        //    if (id == null)
-        //    {
-        //        ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-        //        return View("Error");
-        //    }
-
-        //    var utilisateurReponse = await _usagersProxy.ObtenirUsagerParId(id.Value);
-
-        //    if (utilisateurReponse == null)
-        //    {
-        //        ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-        //        return View("Error");
-        //    }
-
-        //    return View(id);
-        //    //return View(utilisateurReponse);
-        //}
-
-        public async Task<ActionResult> Details(string userCode)
+        public async Task<ActionResult> Details(string code)
         {
 
             if (id == null)
@@ -217,39 +196,39 @@ namespace AutoRapide.MVC.Controllers
             return View(response);
         }
 
-        //[HttpPost, ActionName("Supprimer")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> SupprimerUtilisateur(int? id, Usager utilisateur)
-        //{
-        //    if (id == null)
-        //    {
-        //        ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-        //        return View("Error");
-        //    }
+        [HttpPost, ActionName("Supprimer")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SupprimerUtilisateur(int? id, Usager utilisateur)
+        {
+            if (id == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
 
-        //    var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
+            var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
 
-        //    if (response == null)
-        //    {
-        //        ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-        //        return View("Error");
-        //    }
+            if (response == null)
+            {
+                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                return View("Error");
+            }
 
-        //    var responseSuppression = await _usagersProxy.EffacerUsager(response.Id);
+            var responseSuppression = await _usagersProxy.EffacerUsager(response.Id);
 
-        //    return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
 
-        //}
+        }
 
-        //private string GenererCodeUniqueUsager(Usager usager)
-        //{
-        //    int userNumber = 0;
-        //    string codeUnique = usager.Nom.Substring(0,3).ToUpper() + usager.Prenom.Substring(0,1) + DateTime.Now.ToString("ddMMyyyy") + userNumber.ToString("000000");
-        //    //Ajouter boucle pour comparer les codes existant pour valider unicité? Requête trop intense?
-        //    userNumber += 1;
+        private string GenererCodeUniqueUsager(Usager usager)
+        {
+            int userNumber = 0;
+            string codeUnique = usager.Nom.Substring(0,3).ToUpper() + usager.Prenom.Substring(0,1) + DateTime.Now.ToString("ddMMyyyy") + userNumber.ToString("000000");
+            //Ajouter boucle pour comparer les codes existant pour valider unicité? Requête trop intense?
+            userNumber += 1;
             
-        //    return codeUnique;
-        //}
+            return codeUnique;
+        }
 
     }
 }
