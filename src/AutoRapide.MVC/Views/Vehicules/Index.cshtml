@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Trouvez votre voiture de rêve!</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,22 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Marque)
+                @Html.DisplayNameFor(model => model.Constructeur)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Modele)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Annee)
+                @Html.DisplayNameFor(model => model.AnneeFabrication)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Carburant)
+                @Html.DisplayNameFor(model => model.Type)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Places)
+                @Html.DisplayNameFor(model => model.NombreSiege)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Couleur)
@@ -37,13 +34,22 @@
                 @Html.DisplayNameFor(model => model.NIV)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Image1Url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image2Url)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstDisponible)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Prix)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Disponible)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th></th>
         </tr>
@@ -52,22 +58,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Marque)
+                @Html.DisplayFor(modelItem => item.Constructeur)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Modele)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Annee)
+                @Html.DisplayFor(modelItem => item.AnneeFabrication)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Carburant)
+                @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Places)
+                @Html.DisplayFor(modelItem => item.NombreSiege)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Couleur)
@@ -76,13 +79,22 @@
                 @Html.DisplayFor(modelItem => item.NIV)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Image1Url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image2Url)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstDisponible)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Prix)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Disponible)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

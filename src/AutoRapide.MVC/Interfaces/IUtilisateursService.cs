@@ -6,11 +6,9 @@ namespace AutoRapide.MVC.Services
     {
         Task<Usager> ObtenirUsagerParId(int id);
         Task<Usager> ObtenirUsagerParCodeUsager(string code);
-        //Task<HttpResponseMessage> ObtenirUsagerParId(int id);
-        //Task<HttpResponseMessage> ObtenirUsagerParCodeUsager(string code);
         Task<IEnumerable<Usager>> ObtenirTousLesUsagers();
         Task<HttpResponseMessage> AjouterUsager(Usager usager);
         Task<HttpResponseMessage> ModifierUsager(Usager usager);
-        Task<HttpResponseMessage> EffacerUsager(int id);
+        Task<HttpResponseMessage> EffacerUsager(string code);
     }
 }

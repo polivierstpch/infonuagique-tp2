@@ -16,27 +16,6 @@ namespace AutoRapide.MVC.Services
             _config = config;
         }
 
-        //public async Task<Usager> ObtenirUsagerParId(int id)
-        //{
-        //    var response = await _httpClient.GetAsync(_usagerApiUrl + id);
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        response = await response.Content.ReadFromJsonAsync<Usager>();
-        //    }
-
-        //    return response;
-        //}
-        //public async Task<HttpResponseMessage> ObtenirUsagerParId(int id)
-        //{
-        //    var response = await _httpClient.GetAsync(_usagerApiUrl + id);
-        //    return response;
-        //}
-        //public async Task<HttpResponseMessage> ObtenirUsagerParId(int id)
-        //{
-        //    StringContent content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
-        //    return _httpClient.PostAsync(_usagerApiUrl, content);
-        //}
         public async Task<Usager> ObtenirUsagerParId(int id)
         {
             var content = await _httpClient.GetFromJsonAsync<Usager>(_usagerApiUrl + id);
@@ -47,11 +26,6 @@ namespace AutoRapide.MVC.Services
             var content = await _httpClient.GetFromJsonAsync<Usager>(_usagerApiUrl + code);
             return content;
         }
-        //public async Task<HttpResponseMessage> ObtenirUsagerParCodeUsager(string code)
-        //{
-        //    var response = await _httpClient.GetAsync(_usagerApiUrl + code);
-        //    return response;
-        //}
         public async Task<IEnumerable<Usager>> ObtenirTousLesUsagers()
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<Usager>>(_usagerApiUrl);
@@ -62,10 +36,10 @@ namespace AutoRapide.MVC.Services
         }
         public async Task<HttpResponseMessage> ModifierUsager(Usager usager) {
             StringContent content = new StringContent(JsonConvert.SerializeObject(usager), Encoding.UTF8, "application/json");
-            return await _httpClient.PutAsync(_usagerApiUrl + usager.Id, content);
+            return await _httpClient.PutAsync(_usagerApiUrl + usager.CodeUniqueUsager, content);
         }
-        public async Task<HttpResponseMessage> EffacerUsager(int id) {
-            return await _httpClient.DeleteAsync(_usagerApiUrl + id);
+        public async Task<HttpResponseMessage> EffacerUsager(string code) {
+            return await _httpClient.DeleteAsync(_usagerApiUrl + code);
         }
     }
 }

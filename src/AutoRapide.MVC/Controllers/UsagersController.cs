@@ -35,13 +35,13 @@ namespace AutoRapide.MVC.Controllers
         public async Task<ActionResult> Details(string code)
         {
 
-            if (id == null)
+            if (code == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
-            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParId(id.Value);
+            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (utilisateurReponse == null)
             {
@@ -68,7 +68,6 @@ namespace AutoRapide.MVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    usager.CodeUniqueUsager = GenererCodeUniqueUsager(usager);
                     var response = await _usagersProxy.AjouterUsager(usager);
                     var content = response.Content.ReadAsStringAsync();
                     var usagerCree = JsonConvert.DeserializeObject<Usager>(content.Result);
@@ -80,15 +79,15 @@ namespace AutoRapide.MVC.Controllers
 
         // GET: Usagers/Edit
         [HttpGet]
-        public async Task<ActionResult> ModifierUsager(int? id)
+        public async Task<ActionResult> ModifierUsager(string code)
         {
-            if (id == null)
+            if (code == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
-            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParId(id.Value);
+            var utilisateurReponse = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (utilisateurReponse == null)
             {
@@ -101,15 +100,15 @@ namespace AutoRapide.MVC.Controllers
 
         //POST: Usagers/Edit
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ModifierUsager(int? id, Usager usager)
+        public async Task<ActionResult> ModifierUsager(string code, Usager usager)
         {
-            if (id == null)
+            if (code == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
-            var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
+            var response = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (response == null)
             {
@@ -168,15 +167,15 @@ namespace AutoRapide.MVC.Controllers
             return true;
         }
 
-        public async Task<ActionResult> Supprimer(int? id)
+        public async Task<ActionResult> Supprimer(string code)
         {
-            if (id == null)
+            if (code == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
-            var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
+            var response = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (response == null)
             {
@@ -198,15 +197,15 @@ namespace AutoRapide.MVC.Controllers
 
         [HttpPost, ActionName("Supprimer")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SupprimerUtilisateur(int? id, Usager utilisateur)
+        public async Task<ActionResult> SupprimerUtilisateur(string code, Usager utilisateur)
         {
-            if (id == null)
+            if (code == null)
             {
                 ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
-            var response = await _usagersProxy.ObtenirUsagerParId(id.Value);
+            var response = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (response == null)
             {
@@ -214,20 +213,10 @@ namespace AutoRapide.MVC.Controllers
                 return View("Error");
             }
 
-            var responseSuppression = await _usagersProxy.EffacerUsager(response.Id);
+            var responseSuppression = await _usagersProxy.EffacerUsager(response.CodeUniqueUsager);
 
             return RedirectToAction(nameof(Index));
 
-        }
-
-        private string GenererCodeUniqueUsager(Usager usager)
-        {
-            int userNumber = 0;
-            string codeUnique = usager.Nom.Substring(0,3).ToUpper() + usager.Prenom.Substring(0,1) + DateTime.Now.ToString("ddMMyyyy") + userNumber.ToString("000000");
-            //Ajouter boucle pour comparer les codes existant pour valider unicité? Requête trop intense?
-            userNumber += 1;
-            
-            return codeUnique;
         }
 
     }
