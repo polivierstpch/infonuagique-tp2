@@ -56,31 +56,32 @@ public class CommandesController : Controller
         try
         {
             var codeUsagerGuid = Guid.Parse(codeUsager);
+
+            var usager = await _usagerService.ObtenirUsagerParCodeUsager(codeUsager);
+            if (usager is null)
+            {
+                ModelState.AddModelError("CodeUsager", "Le code usager était invalide.");
+                return View(vehicule);
+            }
+
+            await _commandesService.AjouterAsync(new Commande {UsagerId = usager.Id, VehiculeId = vehicule.Id});
+            vehicule.EstDisponible = false;
+            var result = await _vehiculesService.ModifierAsync(vehicule);
+
+            if (result.IsSuccessStatusCode)
+                return RedirectToAction("Index", "Vehicules", new { id = vehicule.Id });
+
+            ViewBag.Erreur = "Une erreur est survenue lors de la prise de la commande.";
+        
+            vehicule.EstDisponible = true;
+            return View(vehicule);
         }
         catch (FormatException)
         {
             ModelState.AddModelError("CodeUsager", "Le code usager était invalide.");
             return View(vehicule);
         }
-        
-        var usager = await _usagerService.ObtenirUsagerParCodeUsager(codeUsager);
-        if (usager is null)
-        {
-            ModelState.AddModelError("CodeUsager", "Le code usager était invalide.");
-            return View(vehicule);
-        }
-
-        await _commandesService.AjouterAsync(new Commande {UsagerId = usager.Id, VehiculeId = vehicule.Id});
-        vehicule.EstDisponible = false;
-        var result = await _vehiculesService.ModifierAsync(vehicule);
-
-        if (result.IsSuccessStatusCode)
-            return RedirectToAction("Index", "Vehicules", new { id = vehicule.Id });
-
-        ViewBag.Erreur = "Une erreur est survenue lors de la prise de la commande.";
-        
-        vehicule.EstDisponible = true;
-        return View(vehicule);
+      
     }
     
 
