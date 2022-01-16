@@ -6,28 +6,79 @@ namespace AutoRapide.MVC.Services
 {
     public class FavorisServiceProxy : IFavorisService
     {
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _config;
         private const string _favorisApiUrl = "api/Favoris/";
-        public FavorisServiceProxy(HttpClient httpClient, IConfiguration config)
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<FavorisServiceProxy> _logger;
+        public FavorisServiceProxy(HttpClient httpClient, ILogger<FavorisServiceProxy> logger)
         {
             _httpClient = httpClient;
-            _config = config;
+            _logger = logger;
         }
         public async Task<IEnumerable<int>> ObtenirLesFavoris() 
         {
+            var reponse = await _httpClient.GetAsync(_favorisApiUrl);
+            if (reponse.IsSuccessStatusCode)
+            {
+                _logger.LogInformation(
+                    "Obtenus les favoris avec succès (StatusCode: {StatusCode})",
+                    (int)reponse.StatusCode
+                );
+                var content = await reponse.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<IEnumerable<int>>(content);
+            }
 
-            return await _httpClient.GetFromJsonAsync<IEnumerable<int>>(_favorisApiUrl);
+            _logger.LogError(
+                "Les favoris n'ont pas pu être obtenus (StatusCode: {StatusCode})\nRaison: {Raison}",
+                (int)reponse.StatusCode,
+                reponse.ReasonPhrase
+            );
+            
+            return new List<int>();
         }
         public async Task<HttpResponseMessage> AjouterFavori(int idVehicule) 
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(idVehicule), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(idVehicule), Encoding.UTF8, "application/json");
+            var reponse = await _httpClient.PostAsync(_favorisApiUrl, content);
+            if (reponse.IsSuccessStatusCode)
+            {
+                _logger.LogInformation(
+                    "Ajout du véhicule (id: {Id}) dans les favoris avec succès (StatusCode: {StatusCode})",
+                    idVehicule,
+                    (int)reponse.StatusCode
+                );
+                return reponse;
+            }
 
-            return await _httpClient.PostAsync(_favorisApiUrl, content);
+            _logger.LogError(
+                "Le véhicule (id: {Id}) n'a pas pu être ajouté aux favoris (StatusCode: {StatusCode})\nRaison: {Raison}",
+                idVehicule,
+                (int)reponse.StatusCode,
+                reponse.ReasonPhrase
+            );
+
+            return reponse;
         }
         public async Task<HttpResponseMessage> EffacerFavori(int idVehicule) 
         {
-            return await _httpClient.DeleteAsync(_favorisApiUrl + idVehicule);
+            var reponse = await _httpClient.DeleteAsync(_favorisApiUrl + idVehicule);
+            if (reponse.IsSuccessStatusCode)
+            {
+                _logger.LogInformation(
+                    "Suppression du véhicule (id: {Id}) des favoris avec succès (StatusCode: {StatusCode})",
+                    idVehicule,
+                    (int)reponse.StatusCode
+                );
+                return reponse;
+            }
+
+            _logger.LogError(
+                "Le véhicule (id: {Id}) n'a pas pu être supprimé des favoris (StatusCode: {StatusCode})\nRaison: {Raison}",
+                idVehicule,
+                (int)reponse.StatusCode,
+                reponse.ReasonPhrase
+            );
+
+            return reponse;
         }
     }
 }
