@@ -55,4 +55,5 @@ public class VehiculeRepository : IAsyncRepository<Vehicule>
         _contexte.Set<Vehicule>().Remove(entite);
         await _contexte.SaveChangesAsync();
     }
+    
 }

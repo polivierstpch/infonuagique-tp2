@@ -34,12 +34,6 @@
                 @Html.DisplayNameFor(model => model.NIV)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image1Url)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image2Url)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
@@ -47,9 +41,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Prix)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th></th>
         </tr>
@@ -79,12 +70,6 @@
                 @Html.DisplayFor(modelItem => item.NIV)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image1Url)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image2Url)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -94,12 +79,7 @@
                 @Html.DisplayFor(modelItem => item.Prix)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
             </td>
         </tr>
 }

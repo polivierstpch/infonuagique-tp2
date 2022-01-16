@@ -48,9 +48,9 @@ public class FileValidationService : IFileValidationService
 
     public bool IsValidFileType(IFormFile file)
     {
-        var contentType = file.ContentType.ToLower();
+        var contentType = GetContentType(file);
 
-        if (file.Length < ImageMinimumBytes && _acceptedMimeTypes.Contains(contentType))
+        if (file.Length < ImageMinimumBytes && !_acceptedMimeTypes.Contains(contentType))
             return false;
 
         return ValidateFileHeaderAndTrailer(file);
@@ -61,7 +61,7 @@ public class FileValidationService : IFileValidationService
         var headerBytes = GetFileHeader(file);
         var trailerBytes = GetFileTrailer(file);
 
-        var contentType = file.ContentType.ToLower();
+        var contentType = GetContentType(file);
         if (!_validationBytes.TryGetValue(contentType, out var validationBytes)) 
             return false;
         
@@ -99,6 +99,20 @@ public class FileValidationService : IFileValidationService
         
         return bytes;
     }
-    
+
+    private string GetContentType(IFormFile file)
+    {
+        var extension = Path.GetExtension(file.FileName);
+
+        if (string.IsNullOrEmpty(extension))
+            return string.Empty;
+
+        return extension switch
+        {
+            ".jpeg" or ".jpg" => "image/jpeg",
+            ".png" => "image/png",
+            _ => string.Empty
+        };
+    }
     
 }

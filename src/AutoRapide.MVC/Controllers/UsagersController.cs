@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.DataProtection;
 using System.Text.RegularExpressions;
+using AutoRapide.MVC.Interfaces;
 
 namespace AutoRapide.MVC.Controllers
 {

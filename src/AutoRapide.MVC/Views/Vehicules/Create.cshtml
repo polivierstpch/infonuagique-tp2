@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Constructeur" class="control-label"></label>
@@ -29,7 +29,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
+                <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<TypeVehicule>()">
+                    <option value="">Choissez un type de carburation</option>
+                </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -43,39 +45,19 @@
                 <span asp-validation-for="Couleur" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NIV" class="control-label"></label>
-                <input asp-for="NIV" class="form-control" />
-                <span asp-validation-for="NIV" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image1Url" class="control-label"></label>
-                <input asp-for="Image1Url" class="form-control" />
-                <span asp-validation-for="Image1Url" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image2Url" class="control-label"></label>
-                <input asp-for="Image2Url" class="form-control" />
-                <span asp-validation-for="Image2Url" class="text-danger"></span>
+                <label for="fichiers" class="control-label">Choisissez les fichiers à téléverser</label>
+                <input type="file" id="fichiers" name="fichiers" multiple
+                       accept="image/png, image/jpeg" data-val data-val-required="Des fichiers sont requis">
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EstDisponible" /> @Html.DisplayNameFor(model => model.EstDisponible)
-                </label>
-            </div>
             <div class="form-group">
                 <label asp-for="Prix" class="control-label"></label>
                 <input asp-for="Prix" class="form-control" />
                 <span asp-validation-for="Prix" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

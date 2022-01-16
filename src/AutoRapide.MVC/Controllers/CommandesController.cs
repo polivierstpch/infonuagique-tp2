@@ -1,6 +1,5 @@
 ﻿using AutoRapide.MVC.Interfaces;
 using AutoRapide.MVC.Models;
-using AutoRapide.MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoRapide.MVC.Controllers;
