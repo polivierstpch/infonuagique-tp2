@@ -60,7 +60,7 @@
         }
 
         <div>
-            <button asp-controller="Commandes" asp-action="Create" class="btn btn-primary" id="@ViewBag.IdVehicule" disabled="@btnDisabled">Commander</button>
+            <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary" asp-route-id="@ViewBag.IdVehicule" disabled="@btnDisabled">Commander</a>
             @{
                 string messageFavori;
                 string classBouton;
@@ -120,14 +120,6 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
-    @*
-        <p>Ne ratez pas cette opportunité en or!</p>
-        <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary">Commander</a>
-    *@
-</div>
-<div>
-    <button asp-controller="Vehicules" asp-action="Edit" class="btn btn-link" disabled="@btnDisabled">Modifier</button> |
-    <a asp-controller="Vehicules" asp-action="Delete">Supprimer ce vehicule</a>
 </div>
 <div>
     <a asp-action="Index">Retour vers la liste des vehicules</a>

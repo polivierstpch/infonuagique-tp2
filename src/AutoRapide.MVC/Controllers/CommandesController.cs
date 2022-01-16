@@ -25,9 +25,9 @@ public class CommandesController : Controller
         _usagerService = usagerService;
     }
     
-    public async Task<IActionResult> Index(int vehiculeId)
+    public async Task<IActionResult> Create(int id)
     {
-        var vehicule = await _vehiculesService.ObtenirParIdAsync(vehiculeId);
+        var vehicule = await _vehiculesService.ObtenirParIdAsync(id);
 
         if (vehicule is null)
         {
@@ -39,48 +39,38 @@ public class CommandesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(Vehicule vehicule, string codeUsager)
+    public async Task<IActionResult> Create(Vehicule vehicule, string codeUsager)
     {
         if (!vehicule.EstDisponible)
         {
-            ModelState.AddModelError("Vehicule", "Le véhicule n'est pas disponible.");
+            ViewBag.Erreur = "Le véhicule demandé n'est pas disponible.";
             return View(vehicule);
         }
         
         if (string.IsNullOrEmpty(codeUsager))
         {
-            ModelState.AddModelError("CodeUsager", "Le code usager ne doit pas être vide.");
+            ViewBag.Erreur = "Le code usager ne peut être vide.";
             return View(vehicule);
         }
-
-        try
-        {
-            var codeUsagerGuid = Guid.Parse(codeUsager);
-
-            var usager = await _usagerService.ObtenirUsagerParCodeUsager(codeUsager);
-            if (usager is null)
-            {
-                ModelState.AddModelError("CodeUsager", "Le code usager était invalide.");
-                return View(vehicule);
-            }
-
-            await _commandesService.AjouterAsync(new Commande {UsagerId = usager.Id, VehiculeId = vehicule.Id});
-            vehicule.EstDisponible = false;
-            var result = await _vehiculesService.ModifierAsync(vehicule);
-
-            if (result.IsSuccessStatusCode)
-                return RedirectToAction("Index", "Vehicules", new { id = vehicule.Id });
-
-            ViewBag.Erreur = "Une erreur est survenue lors de la prise de la commande.";
         
-            vehicule.EstDisponible = true;
-            return View(vehicule);
-        }
-        catch (FormatException)
+        var usager = await _usagerService.ObtenirUsagerParCodeUsager(codeUsager);
+        if (usager is null)
         {
-            ModelState.AddModelError("CodeUsager", "Le code usager était invalide.");
+            ViewBag.Erreur = "Le code usager est invalide.";
             return View(vehicule);
         }
+
+        await _commandesService.AjouterAsync(new Commande {UsagerId = usager.Id, VehiculeId = vehicule.Id});
+        vehicule.EstDisponible = false;
+        var result = await _vehiculesService.ModifierAsync(vehicule);
+
+        if (result.IsSuccessStatusCode)
+            return RedirectToAction("Index", "Vehicules", new { id = vehicule.Id });
+
+        ViewBag.Erreur = "Une erreur est survenue lors de la prise de la commande.";
+    
+        vehicule.EstDisponible = true;
+        return View(vehicule);
     }
     
 

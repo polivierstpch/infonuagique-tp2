@@ -1,7 +1,9 @@
-﻿@model IEnumerable<AutoRapide.MVC.Models.Vehicule>
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model IEnumerable<AutoRapide.MVC.Models.Vehicule>
 
 @{
     ViewData["Title"] = "Index";
+    var prixDesc = @ViewBag.PrixDescendant is not null && (bool) ViewBag.PrixDescendant;
 }
 
 <h1>Faites de vos rêves une réalité avec RapidAuto!</h1>
@@ -9,12 +11,18 @@
 <p>
     <a asp-action="Create">Afficher un nouveau véhicule</a>
 </p>
-<form asp-action="Index" method="get">
+<form asp-action="Index" method="get" asp-route-prixDescendant="@ViewBag.PrixDescendant">
     <div class="form-actions no-color">
         <p>
-            Trouvez votre voiture idéale: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="&#128269;" class="btn btn-default" id="btnRecherche" /> |
-            <a asp-action="Index">Retour vers la liste complète</a>
+            Trouvez votre voiture idéale: <input type="text" name="filtre" id="filtre" value="@ViewBag.FiltreActuel" />
+            <input type="hidden" name="prixDescendant" id="prixDescendant" value="@(ViewBag.PrixDescendant is not null ? prixDesc : "" )" />
+            <input type="submit" value="&#128269;" class="btn btn-default" /> |
+            <a asp-action="Index">Retour vers la liste complète</a> |
+            <a asp-action="Index" asp-route-prixDescendant="@(!prixDesc)">
+                @{
+                    @Html.Raw(prixDesc ? "Prix croissant" : "Prix décroissant")
+                }
+            </a>
         </p>
         @* TODO Filtre affichage seulement favoris?*@
     </div>

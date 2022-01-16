@@ -8,22 +8,68 @@ public class VehiculesController : Controller
 {
     private readonly IVehiculesService _vehiculesService;
     private readonly IFichiersService _fichiersService;
+    private readonly IFavorisService _favorisService;
     private readonly IConfiguration _config;
-    private readonly IFavorisService _favorisProxy;
 
-    public VehiculesController(IVehiculesService vehiculesService, IFichiersService fichiersService, IConfiguration config, IFavorisService favProxy)
+    public VehiculesController(
+        IVehiculesService vehiculesService,
+        IFichiersService fichiersService, 
+        IFavorisService favorisService,
+        IConfiguration config
+    )
     {
         _vehiculesService = vehiculesService;
         _fichiersService = fichiersService;
+        _favorisService = favorisService;
         _config = config;
-        _favorisProxy = favProxy;
     }
 
     // GET
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(bool? prixDescendant, string filtre = "")
     {
         var vehicules = await _vehiculesService.ObtenirToutAsync();
+
+        if (!string.IsNullOrWhiteSpace(filtre))
+        {
+            filtre = filtre.ToLower();
+            
+            vehicules = vehicules.Where(v =>
+            {
+                var modeleConstructeur = $"{v.Constructeur} {v.Modele}".ToLower();
+                return v.Constructeur.ToLower().Contains(filtre) 
+                       || v.Modele.ToLower().Contains(filtre)
+                       || modeleConstructeur.Contains(filtre);
+            });
+            
+            ViewBag.FiltreActuel = filtre;
+        }
+        
+        
+        ViewBag.PrixDescendant = prixDescendant;
+        
+        if(prixDescendant is null)
+            return View(vehicules);
+
+        if (prixDescendant.Value)
+            vehicules = vehicules.OrderByDescending(v => v.Prix);
+        else
+            vehicules = vehicules.OrderBy(v => v.Prix);
+        
         return View(vehicules);
+    }
+
+    private bool ConstructeurOuModeleContient(Vehicule vehicule, string[] valeurs)
+    {
+        bool constructeurContient = false;
+        bool modeleContient = false;
+        
+        foreach (var valeur in valeurs)
+        {
+            constructeurContient = vehicule.Constructeur.ToLower().Contains(valeur);
+            modeleContient = vehicule.Constructeur.ToLower().Contains(valeur);
+        }
+
+        return constructeurContient || modeleContient;
     }
 
     public async Task<IActionResult> Details(int id)
@@ -32,9 +78,11 @@ public class VehiculesController : Controller
 
         if (vehicule is null)
             return NotFound();
-        var favoris = await _favorisProxy.ObtenirLesFavoris();
+        
+        var favoris = await _favorisService.ObtenirLesFavoris();
         ViewBag.IsFavori = favoris.Contains(id);
         ViewBag.IdVehicule = id;
+        
         return View(vehicule);
     }
 
@@ -95,4 +143,5 @@ public class VehiculesController : Controller
         
         return $"{codeConstructeur}{codeSiege}{typeVehicule}{codeAnneeModel}{numero}".ToUpper();
     }
+    
 }

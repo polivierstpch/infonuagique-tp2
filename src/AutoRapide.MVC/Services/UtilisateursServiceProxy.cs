@@ -23,8 +23,14 @@ namespace AutoRapide.MVC.Services
         }
         public async Task<Usager> ObtenirUsagerParCodeUsager(string code)
         {
-            var content = await _httpClient.GetFromJsonAsync<Usager>(_usagerApiUrl + code);
-            return content;
+            var reponse = await _httpClient.GetAsync(_usagerApiUrl + code);
+            if (reponse.IsSuccessStatusCode)
+            {
+                var content = await reponse.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Usager>(content);
+            }
+            
+            return null;
         }
         public async Task<IEnumerable<Usager>> ObtenirTousLesUsagers()
         {

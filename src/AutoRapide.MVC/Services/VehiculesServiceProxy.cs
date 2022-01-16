@@ -26,6 +26,9 @@ namespace AutoRapide.MVC.Services
         public async Task<Vehicule> ObtenirParIdAsync(int id)
         {
             var response = await _httpClient.GetAsync($"{RouteApi}{id}");
+            if (!response.IsSuccessStatusCode)
+                return null;
+            
             var content = await response.Content.ReadAsStringAsync();
             var vehicule = JsonConvert.DeserializeObject<Vehicule>(content);
             return vehicule;
