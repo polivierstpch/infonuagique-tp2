@@ -18,12 +18,17 @@ namespace AutoRapide.MVC.UnitTests;
 
 public class VehiculesControllerTest
 {
+    private static Dictionary<string, string> inMemorySettings = new Dictionary<string, string> {
+        {"UrlFichiersAPI", "string"}
+    };
     private static readonly Mock<IVehiculesService> _vehiculesService = new Mock<IVehiculesService>();
     private static readonly Mock<IFichiersService> _fichiersService = new Mock<IFichiersService>();
     private static readonly Mock<IFavorisService> _favorisService = new Mock<IFavorisService>();
-    private static readonly Mock<Microsoft.Extensions.Configuration.IConfiguration> _config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
+    private static readonly IConfiguration _config = new ConfigurationBuilder()
+    .AddInMemoryCollection(inMemorySettings)
+    .Build();
     private readonly Fixture _fixture = new Fixture();
-    private readonly VehiculesController _controller = new VehiculesController(_vehiculesService.Object, _fichiersService.Object, _config.Object, _favorisService.Object);
+    private readonly VehiculesController _controller = new VehiculesController(_vehiculesService.Object, _fichiersService.Object, _favorisService.Object, _config);
 
     [Fact]
     public async void Create_Model_Invalide_Retourne_ViewCreateVehicule()
@@ -80,8 +85,7 @@ public class VehiculesControllerTest
         //Avec
         var vehicule = _fixture.Create<Vehicule>();
         var fichiers = new IFormFile[2];
-        _fichiersService.Setup(_ => _.EnvoyerFichiers(vehicule.NIV, fichiers)).ReturnsAsync(() => new List<String>() { "string1", "string2" }) ;
-        _config.Object["UrlFichiersAPI"] = "string";
+        _fichiersService.Setup(_ => _.EnvoyerFichiers(It.IsAny<string>(), It.IsAny<IFormFile[]>())).ReturnsAsync(() => new List<String>() { "string1", "string2" }) ;
         _vehiculesService.Setup(_ => _.AjouterAsync(vehicule)).ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.Created));
 
 
@@ -89,9 +93,6 @@ public class VehiculesControllerTest
         var result = await _controller.Create(vehicule, fichiers);
 
         //Alors
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Post", ((RedirectToActionResult)result).ActionName);
-
         (result as RedirectToActionResult).Should().NotBe(null);
         (result as RedirectToActionResult).ActionName.Should().Be("Index");
 
@@ -103,8 +104,8 @@ public class VehiculesControllerTest
         //Avec
         var vehicule = _fixture.Create<Vehicule>();
         var fichiers = new IFormFile[2];
-        _fichiersService.Setup(_ => _.EnvoyerFichiers(vehicule.NIV, fichiers)).ReturnsAsync(() => new List<String>() { "string1", "string2"});
-        _config.Object["UrlFichiersAPI"] = "string";
+        _fichiersService.Setup(_ => _.EnvoyerFichiers(It.IsAny<string>(), It.IsAny<IFormFile[]>())).ReturnsAsync(() => new List<String>() { "string1", "string2"});
+        
         _vehiculesService.Setup(_ => _.AjouterAsync(vehicule)).ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest));
 
         //Quand
