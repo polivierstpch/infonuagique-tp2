@@ -10,17 +10,16 @@ namespace AutoRapide.MVC.Controllers
 {
     public class UsagersController : Controller
     {
-        private const string _MSG_USAGER_INEXISTANT = "L'utilisateur spécifié est introuvable.";
-        private const string _MSG_USAGER_SUPPRESSION_IMPOSSIBLE = "Une commande à été effectuée par cet usager. Celui-ci ne peux pas être supprimé";
+        private const string MSG_USAGER_INEXISTANT = "L'utilisateur spécifié est introuvable.";
+        private const string MSG_USAGER_SUPPRESSION_IMPOSSIBLE = "Une commande à été effectuée par cet usager. Celui-ci ne peux pas être supprimé";
         
         private readonly IUsagerService _usagersProxy;
-        //private readonly ICommandesService _commandesProxy;
-        //private readonly IFavorisService _favorisProxy;
+        private readonly ICommandesService _commandesProxy;
 
-        public UsagersController(IUsagerService usagerProxy /*, ICommandesService commandesProxy, IFavorisService _favorisProxy*/)
+        public UsagersController(IUsagerService usagerProxy, ICommandesService commandesProxy)
         {
             _usagersProxy = usagerProxy;
-            //_commandesProxy = commandesProxy;
+            _commandesProxy = commandesProxy;
         }
 
         public async Task<ActionResult> Index()
@@ -38,16 +37,16 @@ namespace AutoRapide.MVC.Controllers
 
             if (code == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-                return View("Error");
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
+                return NotFound();
             }
 
             var utilisateurReponse = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (utilisateurReponse == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-                return View("Error");
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
+                return View(code);
             }
 
             return View(utilisateurReponse);
@@ -84,7 +83,7 @@ namespace AutoRapide.MVC.Controllers
         {
             if (code == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
@@ -92,7 +91,7 @@ namespace AutoRapide.MVC.Controllers
 
             if (utilisateurReponse == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
@@ -106,15 +105,15 @@ namespace AutoRapide.MVC.Controllers
         {
             if (code == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
-                return View("Error");
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
+                return NotFound();
             }
 
             var response = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
 
             if (response == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
@@ -126,7 +125,7 @@ namespace AutoRapide.MVC.Controllers
                     {
                         await _usagersProxy.ModifierUsager(usager);
                     }
-                    catch (Exception)
+                    catch (HttpRequestException)
                     {
                         ModelState.AddModelError("", "Une erreur est survenue lors de l'enregistrement des modifications.");
                     }
@@ -173,7 +172,7 @@ namespace AutoRapide.MVC.Controllers
         {
             if (code == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
@@ -181,19 +180,10 @@ namespace AutoRapide.MVC.Controllers
 
             if (response == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
-
-            //var commandesResponse = await _commandesProxy.ObtenirToutesLesCommandes();
-            //List<Commande> allCommandes = commandesResponse.ToString();
-
-            //if (allCommandes.Any(c => c.IdUtilisateur == response.Id))
-            //{
-            //    ViewBag.MessageErreur = _MSG_USAGER_SUPPRESSION_IMPOSSIBLE;
-            //    return View("Error");
-            //}
-
+            
             return View(response);
         }
 
@@ -203,21 +193,33 @@ namespace AutoRapide.MVC.Controllers
         {
             if (code == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
 
             var response = await _usagersProxy.ObtenirUsagerParCodeUsager(code);
-
+            
             if (response == null)
             {
-                ViewBag.MessageErreur = _MSG_USAGER_INEXISTANT;
+                ViewBag.MessageErreur = MSG_USAGER_INEXISTANT;
                 return View("Error");
             }
+            
+            var commandesResponse = await _commandesProxy.ObtenirToutPourUsagerAsync(response.Id);
 
+            if (commandesResponse.Any())
+            {
+                ViewBag.MessageErreur = MSG_USAGER_SUPPRESSION_IMPOSSIBLE;
+                return View("Error");
+            }
+            
             var responseSuppression = await _usagersProxy.EffacerUsager(response.CodeUniqueUsager);
+            
+            if (responseSuppression.IsSuccessStatusCode)
+                return RedirectToAction(nameof(Index));
 
-            return RedirectToAction(nameof(Index));
+            ViewBag.MessageErreur = "Une erreur est survenue lors de la suppression. Veuillez réessayer plus tard.";
+            return View(response);
 
         }
 

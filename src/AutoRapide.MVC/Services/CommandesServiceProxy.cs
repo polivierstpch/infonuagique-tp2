@@ -1,5 +1,6 @@
 ﻿using AutoRapide.MVC.Interfaces;
 using AutoRapide.MVC.Models;
+using Newtonsoft.Json;
 
 namespace AutoRapide.MVC.Services
 {
@@ -24,8 +25,15 @@ namespace AutoRapide.MVC.Services
         }
 
         public async Task<IEnumerable<Commande>> ObtenirToutPourUsagerAsync(int idUsager)
-        {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<Commande>>($"{RouteApi}usager/{idUsager}");
+        { 
+            var reponse = await _httpClient.GetAsync($"{RouteApi}usager/{idUsager}");
+            if (reponse.IsSuccessStatusCode)
+            {
+                var content = await reponse.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<IEnumerable<Commande>>(content);
+            }
+
+            return new List<Commande>();
         }
 
         public async Task<HttpResponseMessage> AjouterAsync(Commande commande)
