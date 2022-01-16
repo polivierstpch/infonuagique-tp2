@@ -33,9 +33,11 @@ namespace AutoRapide.MVC.Models
 
         public string NIV => ConstruireNIV();
     
+        [Display(Name ="1")]
         [Required(ErrorMessage = "Ce champ est requis.")]
         public string Image1Url { get; set; }
 
+        [Display(Name = "2")]
         public string Image2Url { get; set; }
     
         public string Description { get; set; }

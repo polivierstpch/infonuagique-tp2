@@ -4,83 +4,96 @@
     ViewData["Title"] = "Fiche detaillee";
 }
 
-
 <div>
-    <div>
-        <!-- TODO ListView Photo ici -->
+    <div class="containerImages">
+        <div class="imagesVehicule">
+            <!-- TODO ListView Photo ici -->
+            @{
+                //Default: image 1
+                var srcImage = Model.Image1Url;
+
+                if(srcImage == Model.Image1Url)
+                {
+                    <button class="navigationImages" id="nextImage">&#8680;</button>
+                }
+                <img src="@srcImage" alt="Une erreur est survenue">
+
+                
+            }
+        </div>
     </div>
-    
+
     <h1>@Html.DisplayFor(model => model.Constructeur) @Html.DisplayFor(model => model.Modele) @Html.DisplayFor(model => model.AnneeFabrication) </h1>
-    
+
     <div class="headerVehicule">
         <div>
-          @{
-             if (Model.EstDisponible)
-             {
-                 <!-- TODO Ajuster affichage pour cote a cote-->
-                 <h3>@Html.DisplayFor(model => model.Prix)</h3>
-                 <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary">Commander</a>
-             }
-             else
-             {
-                 <h3>Ce vehicule n'est plus disponible</h3>
-                 <h3 class="nonDisponible">@Html.DisplayFor(model => model.Prix)</h3>
-             }
-           }
-        </div>
-        <!--
-        <div>
-              
             @{
-                //if (EstFavori)
-                //{
-                   <input type="checkbox" value="favoris">
-                   <label for="favoris">Ajouter aux favoris</label>
+                if (Model.EstDisponible)
+                {
+                    <!-- TODO Ajuster affichage pour cote a cote-->
+                    <h3>@Html.DisplayFor(model => model.Prix)</h3>
+                    <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary">Commander</a>
                 }
                 else
                 {
-                   <input type="checkbox" value="favoris">
-                   <label for="favoris">Retirer des favoris</label>
+                    <h3>Ce vehicule n'est plus disponible</h3>
+                    <h3 class="nonDisponible">@Html.DisplayFor(model => model.Prix)</h3>
                 }
             }
-            
         </div>
-        -->
-       
+        @*
+            <div>
+
+            @{
+            if (EstFavori)
+            {
+            <input type="checkbox" value="favoris">
+            <label for="favoris">Ajouter aux favoris</label>
+            }
+            else
+            {
+            <input type="checkbox" value="favoris">
+            <label for="favoris">Retirer des favoris</label>
+            }
+            }
+
+            </div>
+        *@
+
     </div>
 
     <hr />
     <h4>Informations additionnelles:</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Type)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Type)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NombreSiege)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NombreSiege)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Couleur)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Couleur)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NIV)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NIV)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
