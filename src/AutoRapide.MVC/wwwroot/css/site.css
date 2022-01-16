@@ -16,3 +16,33 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.nonDisponible {
+    color: darkgrey;
+
+}
+
+.headerVehicule{
+    display: flex;
+    flex-direction:row;
+}
+
+.indexVehicule{
+    display:grid;
+    grid-template-columns: 30% 30% 30%;
+}
+
+.appercuVehicule {
+    border: 2px gray solid;
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.thumbnailVehicule{
+
+}
+
+.resumeVehicule {
+    display: flex;
+    flex-direction: column;
+}

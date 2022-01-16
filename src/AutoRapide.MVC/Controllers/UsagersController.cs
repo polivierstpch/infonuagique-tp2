@@ -78,7 +78,7 @@ namespace AutoRapide.MVC.Controllers
         }
 
         // GET: Usagers/Edit
-        [HttpGet]
+        [HttpGet, ActionName("Modifier")]
         public async Task<ActionResult> ModifierUsager(string code)
         {
             if (code == null)
@@ -99,6 +99,7 @@ namespace AutoRapide.MVC.Controllers
         }
 
         //POST: Usagers/Edit
+        [HttpPost, ActionName("Modifier")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ModifierUsager(string code, Usager usager)
         {

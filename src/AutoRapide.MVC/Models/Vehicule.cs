@@ -40,6 +40,7 @@ namespace AutoRapide.MVC.Models
     
         public string Description { get; set; }
     
+        [Display(Name ="Disponibilité")]
         public bool EstDisponible { get; set; }
     
         [Required(ErrorMessage = "Ce champ est requis.")]
