@@ -8,22 +8,49 @@ public class VehiculesController : Controller
 {
     private readonly IVehiculesService _vehiculesService;
     private readonly IFichiersService _fichiersService;
+    private readonly IFavorisService _favorisService;
     private readonly IConfiguration _config;
 
-    public VehiculesController(IVehiculesService vehiculesService, IFichiersService fichiersService, IConfiguration config)
+    public VehiculesController(
+        IVehiculesService vehiculesService,
+        IFichiersService fichiersService, 
+        IFavorisService favorisService,
+        IConfiguration config
+    )
     {
         _vehiculesService = vehiculesService;
         _fichiersService = fichiersService;
+        _favorisService = favorisService;
         _config = config;
     }
 
     // GET
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(bool? prixDescendant, string filtre = "", bool seulementFavoris = false)
     {
         var vehicules = await _vehiculesService.ObtenirToutAsync();
+
+        if (seulementFavoris)
+        {
+            var favorisIds = await _favorisService.ObtenirLesFavoris();
+            vehicules = vehicules.Where(v => favorisIds.Contains(v.Id));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filtre))
+        {
+            vehicules = vehicules.Where(v => v.Constructeur.Contains(filtre) || v.Modele.Contains(filtre));
+        }
+        
+        if(prixDescendant is null)
+            return View(vehicules);
+
+        if (prixDescendant.Value)
+            vehicules = vehicules.OrderByDescending(v => v.Prix);
+        else
+            vehicules = vehicules.OrderBy(v => v.Prix);
+        
         return View(vehicules);
     }
-
+    
     public async Task<IActionResult> Details(int id)
     {
         var vehicule = await _vehiculesService.ObtenirParIdAsync(id);
