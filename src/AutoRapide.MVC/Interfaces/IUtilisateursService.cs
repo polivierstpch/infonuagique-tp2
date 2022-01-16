@@ -1,10 +1,9 @@
 ﻿using AutoRapide.MVC.Models;
 
-namespace AutoRapide.MVC.Services
+namespace AutoRapide.MVC.Interfaces
 {
     public interface IUsagerService
     {
-        Task<Usager> ObtenirUsagerParId(int id);
         Task<Usager> ObtenirUsagerParCodeUsager(string code);
         Task<IEnumerable<Usager>> ObtenirTousLesUsagers();
         Task<HttpResponseMessage> AjouterUsager(Usager usager);

@@ -1,4 +1,5 @@
-﻿using AutoRapide.MVC.Models;
+﻿using AutoRapide.MVC.Interfaces;
+using AutoRapide.MVC.Models;
 
 namespace AutoRapide.MVC.Services
 {

@@ -1,9 +1,15 @@
+using System.Text.Json.Serialization;
+using AutoRapide.MVC.Interfaces;
 using AutoRapide.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
+builder.Services.AddHttpClient<IFichiersService, FichiersServicesProxy>(client =>
+    client.BaseAddress = new Uri(configuration.GetValue<string>("UrlFichiersAPI")));
+builder.Services.AddHttpClient<IVehiculesService, VehiculesServiceProxy>(client =>
+    client.BaseAddress = new Uri(configuration.GetValue<string>("UrlVehiculesAPI")));
 builder.Services.AddHttpClient<IUsagerService, UtilisateursServiceProxy>(client => 
     client.BaseAddress = new Uri(configuration.GetValue<string>("UrlUsagerAPI")));
 builder.Services.AddHttpClient<ICommandesService, CommandesServiceProxy>(client => 
@@ -11,7 +17,9 @@ builder.Services.AddHttpClient<ICommandesService, CommandesServiceProxy>(client 
 builder.Services.AddHttpClient<IFavorisService, FavorisServiceProxy>(client => 
     client.BaseAddress = new Uri(configuration.GetValue<string>("UrlFavorisAPI")));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(opt =>
+        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();

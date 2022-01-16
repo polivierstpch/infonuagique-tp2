@@ -71,7 +71,7 @@ public class FileStorageController : ControllerBase
             _logger.LogInformation("Le fichiers {Fichier1} et {Fichier2} a été enregistré dans le service de stockage", 
                 nomFichiers[0],  nomFichiers[1]);
             
-            return CreatedAtAction(nameof(GetFile), new { fileName = nomFichiers[0] }, nomFichiers);
+            return Ok(nomFichiers);
         }
         catch (IOException ex)
         {

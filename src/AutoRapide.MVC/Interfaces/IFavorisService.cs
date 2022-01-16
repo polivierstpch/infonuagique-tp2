@@ -1,4 +1,4 @@
-﻿namespace AutoRapide.MVC.Services
+﻿namespace AutoRapide.MVC.Interfaces
 {
     public interface IFavorisService
     {

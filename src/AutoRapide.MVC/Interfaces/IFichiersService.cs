@@ -2,7 +2,6 @@
 {
     public interface IFichiersService
     {
-        public Task<IEnumerable<string>> EnvoyerFichiers(string niv, IFormFileCollection fichiers);
-        public Task SupprimerFichiers(params string[] urlsImage);
+        public Task<IEnumerable<string>> EnvoyerFichiers(string niv, IEnumerable<IFormFile> fichiers);
     }
 }
