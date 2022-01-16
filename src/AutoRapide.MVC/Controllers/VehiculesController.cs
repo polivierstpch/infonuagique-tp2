@@ -84,13 +84,16 @@ public class VehiculesController : Controller
     
     private string ConstruireNIV(Vehicule vehicule)
     {
+        var rng = new Random(Guid.NewGuid().GetHashCode());
+        const int maximumNumero = 1000000;
+        
         string codeConstructeur = vehicule.Constructeur.Trim()[..3];
         string codeSiege = vehicule.NombreSiege.ToString("D2");
         string typeVehicule = ((int)vehicule.Type).ToString("D2");
         
         string anneeRaccourcie = vehicule.AnneeFabrication.ToString()[2..];
         string codeAnneeModel = $"{vehicule.Modele.Trim().Replace("-", "")[..2]}{anneeRaccourcie}";
-        string numero = vehicule.Id.ToString("D6");
+        string numero = rng.Next(0, maximumNumero).ToString("D6");
         
         return $"{codeConstructeur}{codeSiege}{typeVehicule}{codeAnneeModel}{numero}".ToUpper();
     }

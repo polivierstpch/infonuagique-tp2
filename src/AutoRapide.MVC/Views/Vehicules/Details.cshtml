@@ -2,46 +2,40 @@
 
 @{
     ViewData["Title"] = "Fiche detaillee";
+    var listeImages = new List<string> { Model.Image1Url, Model.Image2Url };
 }
 
 <div>
     <div class="containerImages">
-        <div class="imagesVehicule">
-            <!-- TODO ListView Photo ici -->
-            @{
-
-                //Logique viable seulement dans le cadre du travail
-                //A revoir dans un context reel ou plus de deux images == possible
-                //Ex: Methode GetAllImages() dans le controleur
-                List<string> listeImages = new List<string> { Model.Image1Url, Model.Image2Url };
-                var srcImage = Model.Image1Url; //Image 1 : VAleur par default
-                string idButton = "nextImage";
-                string txtButton = "&#8680;";
-                int i = 0;
-
-                string NavigationImage()
-                {
-                    i++;
-
-                    if (i == listeImages.Count - 1)
-                    {
-                        i += -1;
-                        idButton = "previousImage";
-                        txtButton = "&#8678;";
-                    }
-
-                    srcImage = listeImages[i];
-
-                    return srcImage;
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+               @{ 
+                   var premier = true;
                 }
-
-                <div class="navigationImages" id="@idButton" onclick="@NavigationImage()">
-                    @txtButton
-                </div>
-
-                <img src="@srcImage" alt="Une erreur est survenue">
-
-            }
+                @for (int idx = 0; idx < listeImages.Count; idx += 1)
+                {
+                     <button type="button"
+                            data-bs-target="#carouselExampleControls"
+                            data-bs-slide-to="@idx"
+                            class="@(premier ? Html.Raw("active") : Html.Raw("")) bg-primary"
+                            @(premier ? Html.Raw("aria-current=\"true\"") : Html.Raw(""))
+                            aria-label="Slide @(idx + 1)"></button>
+                    premier = false;
+                }
+            </div>
+            <div class="carousel-inner">
+                @{
+                    premier = true;
+                }
+                @foreach (var item in listeImages)
+                {
+                    <div class="carousel-item @(premier ? Html.Raw("active") : Html.Raw(""))"
+                         data-bs-interval="10000">
+                        <img class="d-block w-100" src="@item" alt="Image du véhicule">
+                    </div>
+                    premier = false;
+                }
+            </div>
         </div>
     </div>
 
