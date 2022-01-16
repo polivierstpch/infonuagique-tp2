@@ -8,16 +8,14 @@ namespace AutoRapide.Favoris.API.Services
         private readonly ICacheService _cacheService;
         private readonly IMemoryCache _memoryCache;
 
-        private readonly string _cacheKey = "favoris";
-
         public FavorisService(IMemoryCache memoryCache, ICacheService cacheService)
         {
             _memoryCache = memoryCache;
             _cacheService = cacheService;
         }
-        public IEnumerable<int> ObtenirLesFavoris() 
+        public IEnumerable<int> ObtenirLesFavoris(string ip) 
         {
-            if (!_memoryCache.TryGetValue(_cacheKey, out List<int> idsVehicules))
+            if (!_memoryCache.TryGetValue(ip, out List<int> idsVehicules))
             {
                 return new List<int>() { };
             }
@@ -26,9 +24,9 @@ namespace AutoRapide.Favoris.API.Services
                 return idsVehicules;
             }
         }
-        public void AjouterFavori(int idVehicule)
+        public void AjouterFavori(int idVehicule, string ip)
         {
-            if (!_memoryCache.TryGetValue(_cacheKey, out List<int> idsVehicules))
+            if (!_memoryCache.TryGetValue(ip, out List<int> idsVehicules))
             {
                 idsVehicules = new List<int>() { idVehicule };
             }
@@ -36,11 +34,11 @@ namespace AutoRapide.Favoris.API.Services
             {
                 idsVehicules.Add(idVehicule);
             }
-            _cacheService.SetValuesCacheFavoris(idsVehicules);
+            _cacheService.SetValuesCacheFavoris(idsVehicules, ip);
         }
-        public void EffacerFavori(int idVehicule)
+        public void EffacerFavori(int idVehicule, string ip)
         {
-            if (_memoryCache.TryGetValue(_cacheKey, out List<int> idsVehicules))
+            if (_memoryCache.TryGetValue(ip, out List<int> idsVehicules))
             {
                 if (!idsVehicules.Contains(idVehicule))
                 {
@@ -52,7 +50,7 @@ namespace AutoRapide.Favoris.API.Services
             {
                 throw new NullReferenceException("Il n'y a aucun favori d'enregistré.");
             }
-            _cacheService.SetValuesCacheFavoris(idsVehicules);
+            _cacheService.SetValuesCacheFavoris(idsVehicules, ip);
         }
     }
 }

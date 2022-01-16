@@ -10,11 +10,13 @@ namespace AutoRapide.Favoris.API.Controllers
     {
         private readonly IFavorisService _crudService;
         private readonly ILogger<FavorisController> _logger;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public FavorisController(IFavorisService crudService, ILogger<FavorisController> logger)
+        public FavorisController(IFavorisService crudService, ILogger<FavorisController> logger, IHttpContextAccessor httpContext)
         {
             _crudService = crudService;
             _logger = logger;
+            _httpContext = httpContext;
         }
 
         /// <summary>
@@ -26,8 +28,8 @@ namespace AutoRapide.Favoris.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<int>> Get()
         {
-
-            var favoris = _crudService.ObtenirLesFavoris();
+            var ip = _httpContext.HttpContext.Connection.RemoteIpAddress?.ToString();
+            var favoris = _crudService.ObtenirLesFavoris(ip);
             _logger.LogInformation(CustomLogEvents.Lecture, $"Obtention de {favoris.ToList().Count} favoris en cache.");
             return Ok(favoris);
 
@@ -41,7 +43,8 @@ namespace AutoRapide.Favoris.API.Controllers
         [HttpPost]
         public ActionResult<int> Post(int idVehicule)
         {
-            _crudService.AjouterFavori(idVehicule);
+            var ip = _httpContext.HttpContext.Connection.RemoteIpAddress?.ToString();
+            _crudService.AjouterFavori(idVehicule, ip);
             _logger.LogInformation(CustomLogEvents.Creation, $"Ajout du véhicule avec l'ID: {idVehicule} aux favoris.");
             return new OkObjectResult(new { Message = $"Le véhicule avec l'id {idVehicule} a été ajouté aux favoris avec succès." });
         }
@@ -57,7 +60,8 @@ namespace AutoRapide.Favoris.API.Controllers
         {
             try
             {
-                _crudService.EffacerFavori(idVehicule);
+                var ip = _httpContext.HttpContext.Connection.RemoteIpAddress?.ToString();
+                _crudService.EffacerFavori(idVehicule, ip);
                 _logger.LogInformation(CustomLogEvents.Suppression, $"Supression du véhicule avec l'ID: {idVehicule} des favoris.");
                 return new OkObjectResult(new { Message = $"Le véhicule avec l'id {idVehicule} a été retiré aux favoris avec succès." });
             }
