@@ -62,16 +62,17 @@ public class VehiculesController : Controller
 
         vehicule.NIV = ConstruireNIV(vehicule);
 
-        var urlsFichiers = (await _fichiersService.EnvoyerFichiers(vehicule.NIV, fichiers)).ToList();
+        var urlsFichiers = (await _fichiersService.EnvoyerFichiers(vehicule.NIV, fichiers));
+        var urlsFichiersList = urlsFichiers.ToList();
         
-        if (urlsFichiers.Count != 2)
+        if (urlsFichiersList.Count != 2)
         {
             throw new HttpRequestException("Une erreur est survenue lors de l'envoi des fichiers.");
         }
 
         var fichierApiUrl = _config.GetValue<string>("UrlFichiersAPI") + "/api/fichiers/";
-        vehicule.Image1Url = fichierApiUrl + urlsFichiers[0];
-        vehicule.Image2Url = fichierApiUrl + urlsFichiers[1];
+        vehicule.Image1Url = fichierApiUrl + urlsFichiersList[0];
+        vehicule.Image2Url = fichierApiUrl + urlsFichiersList[1];
 
         vehicule.EstDisponible = true;
 
@@ -84,16 +85,13 @@ public class VehiculesController : Controller
     
     private string ConstruireNIV(Vehicule vehicule)
     {
-        var rng = new Random(Guid.NewGuid().GetHashCode());
-        const int maximumNumero = 1000000;
-        
         string codeConstructeur = vehicule.Constructeur.Trim()[..3];
         string codeSiege = vehicule.NombreSiege.ToString("D2");
         string typeVehicule = ((int)vehicule.Type).ToString("D2");
         
         string anneeRaccourcie = vehicule.AnneeFabrication.ToString()[2..];
         string codeAnneeModel = $"{vehicule.Modele.Trim().Replace("-", "")[..2]}{anneeRaccourcie}";
-        string numero = rng.Next(0, maximumNumero).ToString("D6");
+        string numero = vehicule.Id.ToString("D6");
         
         return $"{codeConstructeur}{codeSiege}{typeVehicule}{codeAnneeModel}{numero}".ToUpper();
     }
