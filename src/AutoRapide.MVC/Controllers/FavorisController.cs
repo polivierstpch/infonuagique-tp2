@@ -31,5 +31,18 @@ namespace AutoRapide.MVC.Controllers
             }
             return View(vehicules);
         }
+
+        public async Task<IActionResult> Ajouter(int idvehicule, bool ajout)
+        {
+            if (ajout)
+            {
+                await _favorisProxy.AjouterFavori(idvehicule);
+            }
+            else
+            {
+                await _favorisProxy.EffacerFavori(idvehicule);
+            }
+            return RedirectToAction("Details", "Vehicules", new { id = idvehicule});
+        }
     }
 }
