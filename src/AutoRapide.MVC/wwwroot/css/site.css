@@ -17,17 +17,18 @@ body {
   margin-bottom: 60px;
 }
 
-.nonDisponible {
-    color: darkgrey;
+.txtAvertissement{
+    color:darkred;
+    font-weight:bold;
+}
 
+
+.nonDisponible {
+    color: grey;
+    text-decoration: line-through;
 }
 
 /* Index Vehicules */
-
-.headerVehicule{
-    display: flex;
-    flex-direction:row;
-}
 
 .indexVehicule{
     display:grid;
@@ -35,13 +36,19 @@ body {
 }
 
 .appercuVehicule {
-    border: 2px gray solid;
+    border: 1px darkgrey solid;
     display: grid;
     grid-template-columns: 40% 60%;
+    margin-right:3%;
 }
 
-.thumbnailVehicule{
+.appercuVehicule:hover {
+    border: 3px grey solid;
+    background-color: darkgrey;
+}
 
+.thumbnailVehicule {
+    border-right: 1px darkgrey solid;
 }
 
 .resumeVehicule {
@@ -49,15 +56,49 @@ body {
     flex-direction: column;
 }
 
+#imgThumb{
+    width:100%;
+    overflow:hidden;
+}
+
+#btnRecherche{
+    background-color: aliceblue;
+    border: 1px gray solid;
+    border-radius: 3px;
+    height:30px;
+    text-align:center;
+}
+
+#btnRecherche:hover{
+    background-color: powderblue;
+}
+
 /* Details Vehicules */
 
+.containerImages{
+    width:100%;
+    min-height:20%;
+}
+
+.headerVehicule {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.headerVehicule > div{
+    margin-right:5%;
+}
+
+.ckrFavoris{
+    align-self:center;
+}
+
 .imagesVehicule {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
+    height: 100%;
     z-index: 1;
     overflow:hidden;
+    margin: 0px auto;
+    text-align:center;
 }
 
 .navigationImages {
@@ -91,4 +132,9 @@ body {
 
 #previousImage:hover {
     opacity: .3;
+}
+
+#btnDisabled{
+    background-color: grey;
+    color: lightgray;
 }

@@ -9,16 +9,38 @@
         <div class="imagesVehicule">
             <!-- TODO ListView Photo ici -->
             @{
-                //Default: image 1
-                var srcImage = Model.Image1Url;
 
-                if(srcImage == Model.Image1Url)
+                //Logique viable seulement dans le cadre du travail
+                //A revoir dans un context reel ou plus de deux images == possible
+                //Ex: Methode GetAllImages() dans le controleur
+                List<string> listeImages = new List<string> { Model.Image1Url, Model.Image2Url };
+                var srcImage = Model.Image1Url; //Image 1 : VAleur par default
+                string idButton = "nextImage";
+                string txtButton = "&#8680;";
+                int i = 0;
+
+                string NavigationImage()
                 {
-                    <button class="navigationImages" id="nextImage">&#8680;</button>
+                    i++;
+
+                    if (i == listeImages.Count - 1)
+                    {
+                        i += -1;
+                        idButton = "previousImage";
+                        txtButton = "&#8678;";
+                    }
+
+                    srcImage = listeImages[i];
+
+                    return srcImage;
                 }
+
+                <div class="navigationImages" id="@idButton" onclick="@NavigationImage()">
+                    @txtButton
+                </div>
+
                 <img src="@srcImage" alt="Une erreur est survenue">
 
-                
             }
         </div>
     </div>
@@ -26,42 +48,47 @@
     <h1>@Html.DisplayFor(model => model.Constructeur) @Html.DisplayFor(model => model.Modele) @Html.DisplayFor(model => model.AnneeFabrication) </h1>
 
     <div class="headerVehicule">
+
+        @{
+            bool btnDisabled = false;
+            string txtPrixClass = "";
+            string btnCommandeId = "";
+
+            if (!Model.EstDisponible)
+            {
+                btnDisabled = true;
+                btnCommandeId = "btnDisabled";
+                txtPrixClass = "nonDisponible";
+                <div>
+                    <h3 class="txtAvertissement">Ce vehicule n'est plus disponible</h3>
+                </div>
+            }
+        }
+
         <div>
+            <button asp-controller="Commandes" asp-action="Create" class="btn btn-primary" id="@btnCommandeId" disabled="@btnDisabled">Commander</button>
+        </div>
+        <div class="ckrFavoris">
             @{
-                if (Model.EstDisponible)
+                //test
+                bool estFavori = false;
+
+                if (estFavori)
                 {
-                    <!-- TODO Ajuster affichage pour cote a cote-->
-                    <h3>@Html.DisplayFor(model => model.Prix)</h3>
-                    <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary">Commander</a>
+                    <input type="checkbox" value="favoris">
+                    <label for="favoris">Ajouter aux favoris</label>
                 }
                 else
                 {
-                    <h3>Ce vehicule n'est plus disponible</h3>
-                    <h3 class="nonDisponible">@Html.DisplayFor(model => model.Prix)</h3>
+                    <input type="checkbox" value="favoris" checked>
+                    <label for="favoris">Retirer des favoris</label>
                 }
             }
         </div>
-        @*
-            <div>
-
-            @{
-            if (EstFavori)
-            {
-            <input type="checkbox" value="favoris">
-            <label for="favoris">Ajouter aux favoris</label>
-            }
-            else
-            {
-            <input type="checkbox" value="favoris">
-            <label for="favoris">Retirer des favoris</label>
-            }
-            }
-
-            </div>
-        *@
-
     </div>
-
+    <div>
+        <h3 class="@txtPrixClass">@Html.DisplayFor(model => model.Prix)&#36;</h3>
+    </div>
     <hr />
     <h4>Informations additionnelles:</h4>
     <hr />
@@ -97,9 +124,15 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
-    <p>Ne manquez pas cette opportunité en or!</p>
-    <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary">Commander</a>
+    @*
+        <p>Ne ratez pas cette opportunité en or!</p>
+        <a asp-controller="Commandes" asp-action="Create" class="btn btn-primary">Commander</a>
+    *@
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <button asp-controller="Vehicules" asp-action="Edit" class="btn btn-link" disabled="@btnDisabled">Modifier</button> |
+    <a asp-controller="Vehicules" asp-action="Delete">Supprimer ce vehicule</a>
+</div>
+<div>
+    <a asp-action="Index">Retour vers la liste des vehicules</a>
 </div>
