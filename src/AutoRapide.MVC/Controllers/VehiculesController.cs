@@ -32,8 +32,14 @@ public class VehiculesController : Controller
         if (!string.IsNullOrWhiteSpace(filtre))
         {
             filtre = filtre.ToLower();
-      
-            vehicules = vehicules.Where(v => v.Constructeur.ToLower().Contains(filtre) || v.Modele.ToLower().Contains(filtre));
+            
+            vehicules = vehicules.Where(v =>
+            {
+                var modeleConstructeur = $"{v.Constructeur} {v.Modele}".ToLower();
+                return v.Constructeur.ToLower().Contains(filtre) 
+                       || v.Modele.ToLower().Contains(filtre)
+                       || modeleConstructeur.Contains(filtre);
+            });
             
             ViewBag.FiltreActuel = filtre;
         }
