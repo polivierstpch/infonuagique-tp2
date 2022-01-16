@@ -2,8 +2,8 @@
 {
     public interface IFavorisService
     {
-        IEnumerable<int> ObtenirLesFavoris();
-        void AjouterFavori(int idVehicule);
-        void EffacerFavori(int idVehicule);
+        IEnumerable<int> ObtenirLesFavoris(string ip);
+        void AjouterFavori(int idVehicule, string ip);
+        void EffacerFavori(int idVehicule, string ip);
     }
 }

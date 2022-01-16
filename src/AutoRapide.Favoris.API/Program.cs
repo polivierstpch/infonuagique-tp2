@@ -12,6 +12,7 @@ builder.Services.AddMemoryCache(options => options.SizeLimit = 1000);
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IFavorisService, FavorisService>();
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
