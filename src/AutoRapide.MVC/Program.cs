@@ -17,6 +17,8 @@ builder.Services.AddHttpClient<ICommandesService, CommandesServiceProxy>(client 
 builder.Services.AddHttpClient<IFavorisService, FavorisServiceProxy>(client => 
     client.BaseAddress = new Uri(configuration.GetValue<string>("UrlFavorisAPI")));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(opt =>
         opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); 

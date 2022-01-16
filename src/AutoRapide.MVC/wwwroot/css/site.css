@@ -112,6 +112,15 @@ body {
     text-align:center;
 }
 
+.btnNavigation{
+    color:white;
+    background-color:blue;
+    border:none;
+    border-radius:3px;
+    padding: 5px;
+    display:inline-block;
+}
+
 #nextImage {
     opacity: 0;
     transition: opacity 0.5s ease;

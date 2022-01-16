@@ -2,6 +2,6 @@
 {
     public interface ICacheService
     {
-        void SetValuesCacheFavoris(List<int> data);
+        void SetValuesCacheFavoris(List<int> data, string ip);
     }
 }
