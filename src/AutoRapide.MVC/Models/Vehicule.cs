@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AutoRapide.MVC.Models
 {
@@ -43,8 +42,8 @@ namespace AutoRapide.MVC.Models
         public string Image2Url { get; set; }
     
         public string Description { get; set; }
-        
-        [DisplayName("Est Disponible")]
+    
+        [Display(Name ="Disponibilité")]
         public bool EstDisponible { get; set; }
     
         [Required(ErrorMessage = "Ce champ est requis.")]

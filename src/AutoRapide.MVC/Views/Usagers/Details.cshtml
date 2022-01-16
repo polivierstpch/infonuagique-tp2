@@ -6,7 +6,7 @@
 <h1>Votre compte</h1>
 
 <div>
-    <h4>>@Html.ActionLink("Modifier vos informations", "Modifier", new { /* id = Model.PrimaryKey */ })</h4>
+    <h4>>@Html.ActionLink("Modifier vos informations", "Modifier", new { code = Model.CodeUniqueUsager })</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -28,9 +28,6 @@
             @Html.DisplayFor(model => model.Adresse)
         </dd>
     </dl>
-    <div class="form-group">
-       <a asp-controller="Vehicules" asp-action="Index" class="btn btn-primary">Voir vos favoris</a> 
-    </div>
 </div>
 <div>
     <a asp-controller="Vehicules" asp-action="Index">Retour à la page d'accueil</a>

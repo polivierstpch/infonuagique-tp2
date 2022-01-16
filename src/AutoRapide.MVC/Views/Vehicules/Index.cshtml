@@ -4,84 +4,38 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Faites de vos rêves une réalité avec RapidAuto!</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Afficher un nouveau véhicule</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Constructeur)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modele)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnneeFabrication)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreSiege)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Couleur)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NIV)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstDisponible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Prix)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Constructeur)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modele)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnneeFabrication)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreSiege)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Couleur)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NIV)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstDisponible)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prix)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Trouvez votre voiture idéale: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Rechercher" class="btn btn-default" /> |
+            <a asp-action="Index">Retour vers la liste complète</a>
+        </p>
+    </div>
+</form>
+
+<div class="indexVehicule">
+
+    @foreach (var item in Model) {
+       <div class="appercuVehicule">
+           <div class="thumbnailVehicule">
+               <!-- photo -->
+           </div>
+           <div class="resumeVehicule">
+              <div>
+                  <h3>@Html.DisplayFor(modelItem => item.Constructeur) @Html.DisplayFor(modelItem => item.Modele) @Html.DisplayFor(modelItem => item.AnneeFabrication)</h3>
+              </div>
+              <div>
+                  @Html.DisplayFor(modelItem => item.Prix)
+              </div>
+           </div>
+       </div>
+   }
+</div>  
+
+
