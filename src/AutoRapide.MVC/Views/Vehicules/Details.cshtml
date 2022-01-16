@@ -60,24 +60,26 @@
         }
 
         <div>
-            <button asp-controller="Commandes" asp-action="Create" class="btn btn-primary" id="@btnCommandeId" disabled="@btnDisabled">Commander</button>
-        </div>
-        <div class="ckrFavoris">
+            <button asp-controller="Commandes" asp-action="Create" class="btn btn-primary" id="@ViewBag.IdVehicule" disabled="@btnDisabled">Commander</button>
             @{
-                //test
-                bool estFavori = false;
-
-                if (estFavori)
+                string messageFavori;
+                string classBouton;
+                bool ajout; 
+                if (ViewBag.IsFavori)
                 {
-                    <input type="checkbox" value="favoris" checked>
-                    <label for="favoris">Ajouter aux favoris</label>
+                    messageFavori = "Retirer des favoris";
+                    classBouton = "btn-danger";
+                    ajout = false;
                 }
                 else
                 {
-                    <input type="checkbox" value="favoris">
-                    <label for="favoris">Retirer des favoris</label>
+                    messageFavori = "Ajouter aux favoris";
+                    classBouton = "btn-success";
+                    ajout = true;
                 }
+                <a asp-controller="Favoris" asp-action="Ajouter" asp-route-idvehicule="@Model.Id" asp-route-ajout="@ajout"><button class="btn @classBouton">@messageFavori</button></a>
             }
+            
         </div>
     </div>
     <div>

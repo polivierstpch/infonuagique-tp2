@@ -50,14 +50,16 @@ public class VehiculesController : Controller
         
         return View(vehicules);
     }
-    
+
     public async Task<IActionResult> Details(int id)
     {
         var vehicule = await _vehiculesService.ObtenirParIdAsync(id);
 
         if (vehicule is null)
             return NotFound();
-        
+        var favoris = await _favorisService.ObtenirLesFavoris();
+        ViewBag.IsFavori = favoris.Contains(id);
+        ViewBag.IdVehicule = id;
         return View(vehicule);
     }
 

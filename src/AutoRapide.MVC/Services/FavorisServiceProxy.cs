@@ -16,6 +16,7 @@ namespace AutoRapide.MVC.Services
         }
         public async Task<IEnumerable<int>> ObtenirLesFavoris() 
         {
+
             return await _httpClient.GetFromJsonAsync<IEnumerable<int>>(_favorisApiUrl);
         }
         public async Task<HttpResponseMessage> AjouterFavori(int idVehicule) 

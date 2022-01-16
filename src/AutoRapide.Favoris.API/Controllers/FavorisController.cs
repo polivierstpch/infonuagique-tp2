@@ -41,7 +41,7 @@ namespace AutoRapide.Favoris.API.Controllers
         /// <remarks>Pas de remarques</remarks>  
         /// <response code="201">Le véhicule a été ajouté aux favoris avec succès!</response>
         [HttpPost]
-        public ActionResult<int> Post(int idVehicule)
+        public ActionResult<int> Post([FromBody]int idVehicule)
         {
             var ip = _httpContext.HttpContext.Connection.RemoteIpAddress?.ToString();
             _crudService.AjouterFavori(idVehicule, ip);

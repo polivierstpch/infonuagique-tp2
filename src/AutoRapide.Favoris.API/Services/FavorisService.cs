@@ -28,9 +28,9 @@ namespace AutoRapide.Favoris.API.Services
         {
             if (!_memoryCache.TryGetValue(ip, out List<int> idsVehicules))
             {
-                idsVehicules = new List<int>() { idVehicule };
+                idsVehicules = new List<int>();
             }
-            else
+            if (!idsVehicules.Contains(idVehicule))
             {
                 idsVehicules.Add(idVehicule);
             }
