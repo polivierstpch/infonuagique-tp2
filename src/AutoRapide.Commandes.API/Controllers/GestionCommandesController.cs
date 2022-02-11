@@ -95,14 +95,14 @@ public class GestionCommandesController : ControllerBase
 
         if (existe)
         {
-            _logger.LogInformation(CustomLogEvents.Creation, 
+            _logger.LogError(CustomLogEvents.Creation, 
                 "Une commande est déjà existante pour le véhicule (id: {Id})", commande.VehiculeId);
             return BadRequest($"Une commande pour le véhicule (id: {commande.VehiculeId}) existe déjà dans la base de données.");
         }
 
-        if (commande.Date < DateTime.Now)
+        if (commande.Date.Date < DateTime.Now.Date)
         {
-            _logger.LogInformation(CustomLogEvents.Creation, 
+            _logger.LogError(CustomLogEvents.Creation, 
                 "La date ({Date:yy-MM-dd}) n'est pas une date valide", commande.Date);
             return BadRequest("Veuillez enregistrer une commande avec la date actuelle d'aujourd'hui.");
         }

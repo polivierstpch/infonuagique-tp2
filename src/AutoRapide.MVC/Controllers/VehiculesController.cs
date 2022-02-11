@@ -126,7 +126,7 @@ public class VehiculesController : Controller
 
         var reponse = await _vehiculesService.AjouterAsync(vehicule);
 
-        reponse.EnsureSuccessStatusCode();
+        
 
         return RedirectToAction(nameof(Index));
     }

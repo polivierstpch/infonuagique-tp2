@@ -14,7 +14,7 @@ namespace AutoRapide.Utilisateurs.API.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
 
             modelBuilder.Entity("AutoRapide.Utilisateurs.API.Entities.Usager", b =>
                 {
@@ -26,7 +26,6 @@ namespace AutoRapide.Utilisateurs.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CodeUniqueUsager")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")

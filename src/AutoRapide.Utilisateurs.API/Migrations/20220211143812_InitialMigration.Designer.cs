@@ -10,13 +10,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoRapide.Utilisateurs.API.Migrations
 {
     [DbContext(typeof(UsagerContext))]
-    [Migration("20220107203206_AjoutCodeUsager")]
-    partial class AjoutCodeUsager
+    [Migration("20220211143812_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
 
             modelBuilder.Entity("AutoRapide.Utilisateurs.API.Entities.Usager", b =>
                 {
@@ -28,7 +28,6 @@ namespace AutoRapide.Utilisateurs.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CodeUniqueUsager")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")

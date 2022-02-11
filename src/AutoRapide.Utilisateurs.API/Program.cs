@@ -84,18 +84,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-
-        InitializeurBd.Initialiser(scope.ServiceProvider.GetRequiredService<UsagerContext>());
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Une erreur est survenue lors de la création de la base de données");
-    }
-}
-
 app.Run();

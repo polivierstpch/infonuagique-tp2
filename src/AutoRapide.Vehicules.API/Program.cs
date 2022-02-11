@@ -56,18 +56,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var contexte = scope.ServiceProvider.GetRequiredService<VehiculeContext>();
-        InitialiseurBd.Initialiser(contexte, "https://localhost:44314");
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Une erreur est survenue lors de l'initialisation de la base de données");
-    }
-}
-
 app.Run();

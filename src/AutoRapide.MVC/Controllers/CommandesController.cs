@@ -60,7 +60,7 @@ public class CommandesController : Controller
             return View(vehicule);
         }
 
-        await _commandesService.AjouterAsync(new Commande {UsagerId = usager.Id, VehiculeId = vehicule.Id});
+        await _commandesService.AjouterAsync(new Commande { UsagerId = usager.Id, VehiculeId = vehicule.Id });
         vehicule.EstDisponible = false;
         var result = await _vehiculesService.ModifierAsync(vehicule);
 

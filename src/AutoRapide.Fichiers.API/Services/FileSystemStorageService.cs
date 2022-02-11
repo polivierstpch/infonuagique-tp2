@@ -6,18 +6,15 @@ namespace AutoRapide.Fichiers.API.Services;
 public class FileSystemStorageService : IStorageService
 {
     private const string DefaultFolderName = "AutoRapideFiles";
-    private const string DefaultSubFolderName = "other";
-    
+
     private readonly IConfiguration _config;
-    private readonly string _defaultPath;
-    
-    private string RootDirectoryPath => _config.GetValue<string>("StoragePath") ?? _defaultPath;
+    private readonly string _fileFolderPath;
     
     public FileSystemStorageService(IConfiguration config)
     {
         _config = config;
-        _defaultPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        _fileFolderPath = Path.Combine(
+            Directory.GetCurrentDirectory(),
             DefaultFolderName
         );
     }
@@ -28,18 +25,17 @@ public class FileSystemStorageService : IStorageService
         if (string.IsNullOrEmpty(extension))
             return;
         
-        EnsureFolderExists(RootDirectoryPath);
+        EnsureFolderExists(_fileFolderPath);
         
-        var cheminFichier = Path.Combine(RootDirectoryPath, nomFichier);
+        var cheminFichier = Path.Combine(_fileFolderPath, nomFichier);
         
         await using var writer = new FileStream(cheminFichier, FileMode.Create);
         await fichier.CopyToAsync(writer);
     }
     
-    
     public async Task<byte[]> DownloadAsync(string fileName)
     {
-        var completePath = Path.Combine(RootDirectoryPath, fileName);
+        var completePath = Path.Combine(_fileFolderPath, fileName);
         
         if (!File.Exists(completePath))
             return Array.Empty<byte>();
@@ -49,7 +45,7 @@ public class FileSystemStorageService : IStorageService
 
     public async Task<bool> DeleteAsync(string fileName)
     {
-        var completePath = Path.Combine(RootDirectoryPath, fileName);
+        var completePath = Path.Combine(_fileFolderPath, fileName);
 
         if (!File.Exists(completePath))
             return false;
