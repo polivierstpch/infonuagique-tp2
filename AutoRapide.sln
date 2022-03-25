@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5A3E3073-5ADE-4695-A849-D9F5656E0A19}"
-	ProjectSection(SolutionItems) = preProject
-		src\AutoRapide.Utilisateurs.API\CustomLogEvents.cs = src\AutoRapide.Utilisateurs.API\CustomLogEvents.cs
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoRapide.MVC", "src\AutoRapide.MVC\AutoRapide.MVC.csproj", "{7CB3DFFC-A944-4629-8722-951770936CA3}"
 EndProject

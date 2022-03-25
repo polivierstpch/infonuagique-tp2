@@ -7,5 +7,4 @@
         public const int Modication = 102;
         public const int Suppression = 103;
     }
-
 }

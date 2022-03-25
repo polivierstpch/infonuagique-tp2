@@ -7,12 +7,10 @@ public class FileSystemStorageService : IStorageService
 {
     private const string DefaultFolderName = "AutoRapideFiles";
 
-    private readonly IConfiguration _config;
     private readonly string _fileFolderPath;
     
-    public FileSystemStorageService(IConfiguration config)
+    public FileSystemStorageService()
     {
-        _config = config;
         _fileFolderPath = Path.Combine(
             Directory.GetCurrentDirectory(),
             DefaultFolderName

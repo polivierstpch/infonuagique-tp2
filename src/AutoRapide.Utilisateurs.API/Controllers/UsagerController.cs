@@ -64,7 +64,7 @@ namespace AutoRapide.Utilisateurs.API.Controllers
             {
                 return Ok(usager);
             }
-            
+    
         }
 
         /// <summary>
