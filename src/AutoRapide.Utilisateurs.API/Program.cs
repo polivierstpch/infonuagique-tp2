@@ -12,8 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<UsagerContext>(options => 
-                                                    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
 builder.Services.AddScoped<IUsagerService, UsagerService>();
@@ -25,7 +24,7 @@ builder.Services.AddSwaggerGen(c =>
 
         Title = "API de gestion des usager de la boutique AutoRapide",
         Version = "v1",
-        Description = "Système permettant de créer, modifier, supprimer et consulter des usagers",
+        Description = "Systï¿½me permettant de crï¿½er, modifier, supprimer et consulter des usagers",
         License = new OpenApiLicense
         {
             Name = "Apache 2.0",
@@ -67,7 +66,7 @@ else
             var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerFeature>();
             if (exceptionHandlerPathFeature?.Error is ArgumentException)
             {
-                String.Format("Status Code: {0}, Message : {1}", context.Response.StatusCode, "Aucune reponse pour cette requête");
+                String.Format("Status Code: {0}, Message : {1}", context.Response.StatusCode, "Aucune reponse pour cette requï¿½te");
             }
             else
             {
