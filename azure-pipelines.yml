@@ -8,9 +8,9 @@ trigger:
 
 variables:
   serviceConnection: 'InfonuagiqueAzure'
-  resourceGroupName: 'rg-tp2-autorapide-postch'
+  resourceGroupName: 'rg-tp2-autorapide-postpch'
   location: 'canadacentral'
-  templateFile: '**/bicep/main.bicep'
+  templateFile: '**/main.bicep'
   webAppName: 'AutoRapide'
 
 stages:
@@ -19,14 +19,6 @@ stages:
     vmImage: ubuntu-latest
   displayName: 'Approvisionnement des ressources Azure'
   jobs:
-    - job: 'CheckRepo'
-      displayName: 'Listing des répertoires'
-      steps:
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            ls -Rla
     - job: 'AzureCLI'
       displayName: 'Exécution du script bicep'
       steps:
