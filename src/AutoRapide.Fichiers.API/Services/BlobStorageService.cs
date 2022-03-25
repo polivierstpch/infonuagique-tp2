@@ -19,9 +19,9 @@ public class BlobStorageService : IStorageService
             return;
 
         var blobClient = _blobContainerClient.GetBlobClient(nomFichier);
-
-        await using var blobStream = await blobClient.OpenWriteAsync(true);
-        await fichier.CopyToAsync(blobStream);
+        
+        await using var fileStream = fichier.OpenReadStream(); 
+        await blobClient.UploadAsync(fileStream);
     }
 
     public async Task<byte[]> DownloadAsync(string fileName)
