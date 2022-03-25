@@ -1,12 +1,16 @@
 using System.Reflection;
 using AutoRapide.Fichiers.API.Interfaces;
 using AutoRapide.Fichiers.API.Services;
+using Microsoft.Extensions.Azure;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAzureClients(configure => 
+    configure.AddBlobServiceClient(builder.Configuration.GetConnectionString("StorageConnectionString")));
+
 // Add services to the container.
-builder.Services.AddTransient<IStorageService, FileSystemStorageService>();
+builder.Services.AddTransient<IStorageService, BlobStorageService>();
 builder.Services.AddTransient<IFileValidationService, FileValidationService>();
 
 builder.Services.AddControllers();
