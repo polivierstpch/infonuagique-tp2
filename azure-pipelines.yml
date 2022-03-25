@@ -6,6 +6,13 @@
 trigger:
 - main
 
+variables:
+  serviceConnection: 'InfonuagiqueAzure'
+  resourceGroupName: 'rg-tp2-autorapide-postch'
+  location: 'canadacentral'
+  templateFile: '**/bicep/main.bicep'
+  webAppName: 'AutoRapide'
+
 stages:
 - stage: 'RessourcesAzure'
   pool:
@@ -13,12 +20,6 @@ stages:
   displayName: 'Approvisionnement des ressources Azure'
   jobs:
     - job: 'AzureCLI'
-      variables:
-        serviceConnection : 'InfonuagiqueAzure'
-        resourceGroupName: 'rg-tp2-autorapide-postch'
-        location: 'canadacentral'
-        templateFile: '**/bicep/main.bicep'
-        webAppName: 'AutoRapide'
       displayName: 'Exécution du script bicep'
       steps:
         - task: AzureCLI@2
