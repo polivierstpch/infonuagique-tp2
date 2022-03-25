@@ -19,6 +19,14 @@ stages:
     vmImage: ubuntu-latest
   displayName: 'Approvisionnement des ressources Azure'
   jobs:
+    - job: 'CheckRepo'
+      displayName: 'Listing des répertoires'
+      steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo $(ls -Rla)
     - job: 'AzureCLI'
       displayName: 'Exécution du script bicep'
       steps:
