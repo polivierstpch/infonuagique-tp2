@@ -7,7 +7,7 @@ trigger:
 - main
 
 stages:
-- stage: 'Ressources Azure'
+- stage: 'RessourcesAzure'
   pool:
     vmImage: ubuntu-latest
   displayName: 'Approvisionnement des ressources Azure'
