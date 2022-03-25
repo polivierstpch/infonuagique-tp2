@@ -26,7 +26,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            echo $(ls -Rla)
+            ls -Rla
     - job: 'AzureCLI'
       displayName: 'Exécution du script bicep'
       steps:
