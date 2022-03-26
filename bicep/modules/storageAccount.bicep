@@ -22,7 +22,3 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
     publicAccess: 'Container'
   }
 }
-
-var blobStorageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
-
-output connectionString string = blobStorageConnectionString

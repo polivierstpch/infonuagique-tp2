@@ -43,7 +43,7 @@ var envSettings = {
 
 var apiUrlSettings = [for name in apiNames:{
   name: 'Url${name}'
-  value: 'https://${toLower(name)}-${resourceGroup().id}.azurewebsites.net'
+  value: 'https://${toLower(name)}-${uniqueString(resourceGroup().id)}.azurewebsites.net'
 }]
 
 var mvcAppSettings = concat([
@@ -57,7 +57,7 @@ var webAppConfigs = [
     hasSlot: false
     connectionStrings : [
       {
-        connectionString: 'Server=tcp:${sqlServerName}${environment().suffixes.sqlServerHostname};Database=UsagerAPI;User ID=${adminDbLogin}@${sqlServerName};Password=${adminDbPassword};Trusted_Connection=False;Encrypt=True;'
+        connectionString: 'Server=tcp:${sqlServerName}${environment().suffixes.sqlServerHostname};Database=UsagerAPIDb;User ID=${adminDbLogin}@${sqlServerName};Password=${adminDbPassword};Trusted_Connection=False;Encrypt=True;'
         name: 'DefaultConnection'
         type: 'SQLServer'
       }
@@ -72,7 +72,7 @@ var webAppConfigs = [
     hasSlot: false
     connectionStrings : [
       {
-        connectionString: 'Server=tcp:${sqlServerName}${environment().suffixes.sqlServerHostname};Database=VehiculesAPI;User ID=${adminDbLogin}@${sqlServerName};Password=${adminDbPassword};Trusted_Connection=False;Encrypt=True;'
+        connectionString: 'Server=tcp:${sqlServerName}${environment().suffixes.sqlServerHostname};Database=VehiculesAPIDb;User ID=${adminDbLogin}@${sqlServerName};Password=${adminDbPassword};Trusted_Connection=False;Encrypt=True;'
         name: 'DefaultConnection'
         type: 'SQLServer'
       }
@@ -87,7 +87,7 @@ var webAppConfigs = [
     hasSlot: false
     connectionStrings : [
       {
-        connectionString: 'Server=tcp:${sqlServerName}${environment().suffixes.sqlServerHostname};Database=CommandesAPI;User ID=${adminDbLogin}@${sqlServerName};Password=${adminDbPassword};Trusted_Connection=False;Encrypt=True;'
+        connectionString: 'Server=tcp:${sqlServerName}${environment().suffixes.sqlServerHostname};Database=CommandesAPIDb;User ID=${adminDbLogin}@${sqlServerName};Password=${adminDbPassword};Trusted_Connection=False;Encrypt=True;'
         name: 'DefaultConnection'
         type: 'SQLServer'
       }
