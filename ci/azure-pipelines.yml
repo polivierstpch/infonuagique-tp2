@@ -115,7 +115,7 @@ stages:
               WebAppName: 'FavorisAPI-ov7wal3dh27xs'
               package: '$(Build.ArtifactStagingDirectory)/**/*AutoRapide.Favoris.API.zip'
              displayName: 'Déploiement de FavorisAPI'
-    - deployment : 'DeployClient'
+    - deployment: 'DeployClient'
       dependsOn: 'DeployAPIs'
       environment: 'h22-developpement'
       strategy:
