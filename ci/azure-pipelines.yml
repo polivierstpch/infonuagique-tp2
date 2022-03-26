@@ -75,7 +75,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'UsagerAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/**/AutoRapide.UsagerAPI.zip'
+              package: '$(Build.ArtifactStagingDirectory)/drop/AutoRapide.UsagerAPI.zip'
              displayName: 'Déploiement d''UsagerAPI'
            - task: AzureRmWebAppDeployment@4
              inputs:
@@ -83,7 +83,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'VehiculesAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/**/AutoRapide.VehiculesAPI.zip'
+              package: '$(Build.ArtifactStagingDirectory)/drop/AutoRapide.VehiculesAPI.zip'
              displayName: 'Déploiement de VehiculesAPI'
            - task: AzureRmWebAppDeployment@4
              inputs:
@@ -91,7 +91,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'CommandesAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/**/AutoRapide.CommandesAPI.zip'
+              package: '$(Build.ArtifactStagingDirectory)/drop/AutoRapide.CommandesAPI.zip'
              displayName: 'Déploiement de CommandesAPI'
            - task: AzureRmWebAppDeployment@4
              inputs:
@@ -99,7 +99,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'FichiersAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/**/AutoRapide.FichiersAPI.zip'
+              package: '$(Build.ArtifactStagingDirectory)/drop/AutoRapide.FichiersAPI.zip'
              displayName: 'Déploiement de FichiersAPI'
            - task: AzureRmWebAppDeployment@4
              inputs:
@@ -107,7 +107,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'FavorisAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/**/AutoRapide.FavorisAPI.zip'
+              package: '$(Build.ArtifactStagingDirectory)/drop/AutoRapide.FavorisAPI.zip'
              displayName: 'Déploiement de FavorisAPI'
     - deployment : 'DeployClient'
       dependsOn: 'DeployAPIs'
@@ -129,6 +129,6 @@ stages:
                 azureSubscription: '$(serviceConnection)'
                 appType: 'webApp'
                 WebAppName: 'AutoRapideMVC-ov7wal3dh27xs'
-                package: '$(Build.ArtifactStagingDirectory)/**/AutoRapide.AutoRapideMVC.zip'
+                package: '$(Build.ArtifactStagingDirectory)/drop/AutoRapide.AutoRapideMVC.zip'
               displayName: 'Déploiement de AutoRapideMVC'
 
