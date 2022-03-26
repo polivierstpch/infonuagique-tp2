@@ -89,7 +89,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'VehiculesAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/AutoRapide.Vehicules.API.zip'
+              package: '$(Build.ArtifactStagingDirectory)/**/*AutoRapide.Vehicules.API.zip'
              displayName: 'Déploiement de VehiculesAPI'
            - task: AzureRmWebAppDeployment@4
              inputs:
