@@ -81,7 +81,7 @@ stages:
               azureSubscription: '$(serviceConnection)'
               appType: 'webApp'
               WebAppName: 'UsagerAPI-ov7wal3dh27xs'
-              package: '$(Build.ArtifactStagingDirectory)/**/*AutoRapide.Usager.API.zip'
+              package: '$(Build.ArtifactStagingDirectory)/**/*AutoRapide.Utilisateurs.API.zip'
              displayName: 'Déploiement d''UsagerAPI'
            - task: AzureRmWebAppDeployment@4
              inputs:
